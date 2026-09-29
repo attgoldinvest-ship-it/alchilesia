@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   Design system "INVEST" — copiado de core.txt (el corazón de
+   estilo del proyecto). 6 tokens, 1 acento. No se inventan
+   colores nuevos fuera de esta lista.
+   ═══════════════════════════════════════════════════════════ */
+@theme {
+  --color-bg: #0A0A0A;       /* Background — fondo principal */
+  --color-surface: #1A1A1E;  /* Surface — cards */
+  --color-border: #2A2A2E;   /* Border — bordes / divisores */
+  --color-accent: #FF6B2D;   /* Accent — primario / CTA, máx. 8% de la superficie */
+  --color-hover: #3A3A3E;    /* borde en hover de cards */
+  --color-text: #FFFFFF;     /* Text Primary */
+  --color-muted: #9A9AA0;    /* Text Secondary */
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 28px;
+  --radius-chip: 16px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgb(255 107 45 / 0.3);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 999px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+
+/* Confeti del certificado — mismo timing que curso-inversiones.html */
+@keyframes confCae {
+  0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(105vh) translateX(var(--dx)) rotate(var(--rot)); opacity: 0; }
+}

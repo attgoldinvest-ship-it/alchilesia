@@ -1,0 +1,629 @@
+## TEMARIO MAESTRO — Dasus — v2
+## Un solo curso, en 3 bloques: Inversión tradicional → Cripto funcional → Maestría
+## 84 lecciones, 18 unidades
+
+Para cualquier persona, tenga o no experiencia en dinero/inversión. Español
+mexicano, cero tecnicismos sin explicar, un ejemplo o analogía cotidiana en
+CADA lección conceptual. Formato Duolingo: unidades = tramos del caminito,
+lecciones = nodos, cada lección cierra con una mini decisión (+XP) o un
+simulador. Numeración continua de unidades y lecciones de principio a fin —
+es UN curso, no varios cursos pegados.
+
+Historial: este documento nació de fusionar dos temarios sueltos —
+"Con Cabeza" (inversión tradicional) y "Cripto Funcional" — en un solo
+curso por bloques. Esos dos archivos ya no existen por separado; todo su
+contenido vive aquí, actualizado. v2 reestructura la Unidad 7 (de 8 a 11
+lecciones) para incluir el hueco de dinero digital / CBDC / riesgo de
+efectivo 100% digital que faltaba para que el Bloque 2 tenga sentido
+completo — el resto del curso corre +3 en su numeración (81 → 84 lecciones).
+
+============================================================
+BLOQUE 1 — INVERSIÓN TRADICIONAL ("Con Cabeza")
+============================================================
+Mismo tono que "Sin Bronca" (tu curso de cripto original): sin choro, con
+ejemplos en pesos. Este bloque es el piso: fondo de emergencia, deuda,
+riesgo, dónde vive el dinero, cómo se ve en la práctica y las trampas más
+comunes — antes de meter un peso a cripto.
+
+## Unidad 1 — Antes de invertir un peso
+
+1. **Tu dinero se encoge**
+   Guardaste $10,000 en una caja. Un año después siguen ahí, completitos —
+   pero la torta que costaba $25 ya cuesta $40. El billete no se hizo
+   chiquito, lo que compra sí. Eso es la inflación: come tu dinero sin que lo veas.
+   Ejemplo: $100 hoy, con 5% de inflación anual, cuestan cerca de $163 en 10 años.
+
+2. **El colchón antes que todo**
+   Fondo de emergencia: dinero fácil de sacar, sin arriesgarlo, para cuando
+   algo sale mal. Cubre entre 3 y 6 meses de tus gastos básicos.
+   Ejemplo: sin este colchón, cualquier imprevisto (te despiden, se descompone
+   el coche) te obliga a vender tus inversiones justo cuando tal vez están bajas.
+
+3. **Deuda cara vs. deuda barata**
+   No toda deuda es mala. Una hipoteca a tasa baja no es lo mismo que una
+   tarjeta al 45% anual. Si tu deuda cobra más de lo que tu inversión promete
+   ganar, pagarla es la inversión más rentable y segura que vas a encontrar.
+   Ejemplo: pagar una tarjeta al 45% es como "ganar" 45% garantizado —
+   ninguna inversión normal te da eso.
+
+4. **¿Para qué estás invirtiendo?**
+   Tu horizonte de tiempo (1 año vs. 5 vs. 30) cambia cuánto riesgo te puedes
+   permitir. Dinero que necesitas pronto no debería estar en algo volátil.
+   Ejemplo: $50,000 para un enganche el próximo año van en algo estable, no
+   en algo que pueda estar 20% abajo justo quince días antes de necesitarlos.
+
+## Unidad 2 — La regla que gobierna todo
+
+5. **Riesgo y ganancia van pegados**
+   Entre más te prometen ganar, más puedes perder. Siempre, sin excepción,
+   sin "este caso es distinto". Ganancia alta + garantizada + sin riesgo es
+   una combinación que no existe en inversiones reales.
+   Ejemplo: si alguien te ofrece 15% mensual garantizado con contrato
+   firmado, el riesgo eres tú.
+
+6. **El interés compuesto**
+   Ganar interés sobre el interés que ya ganaste antes. Por eso empezar
+   pronto pesa más que empezar con mucho — el tiempo es el ingrediente más
+   poderoso, más que el monto mensual.
+   Ejemplo: $500 al mes durante 20 años a 8% anual se vuelven ~$294,000 —
+   solo metiste $120,000. El resto lo hizo el tiempo.
+
+7. **Diversificar: no todos los huevos en una canasta**
+   Repartir tu dinero entre distintas inversiones, para que ninguna sola te
+   hunda si le va mal. Cuando tu sueldo y tu inversión dependen de la misma
+   fuente (la empresa donde trabajas), un solo golpe te pega dos veces.
+   Ejemplo: un fondo indexado con cientos de empresas diversifica de un solo movimiento.
+
+8. **Volatilidad no es lo mismo que perder**
+   Que baje en el papel no es lo mismo que vender con pérdida. La
+   volatilidad son subidas y bajadas normales; perder de verdad es vender en
+   el punto bajo, por pánico.
+   Ejemplo: tu inversión baja 10% esta semana pero tu meta es a 25 años —
+   no vendiste, no perdiste nada todavía.
+
+## Unidad 3 — Dónde puede vivir tu dinero
+
+9. **Cuenta de ahorro / CETES**
+   El piso, casi sin riesgo, rendimiento chiquito. Seguridad y rendimiento
+   casi siempre van en direcciones opuestas.
+   Ejemplo: CETES son deuda del gobierno mexicano — le prestas tú a él por
+   un plazo fijo, a cambio de interés, con muy poco riesgo.
+
+10. **Fondos indexados / ETFs**
+    Comprar "un pedacito de todo" en vez de adivinar una empresa.
+    Ejemplo: un ETF del S&P 500 es comprar una rebanada de las 500 empresas
+    más grandes de EE.UU. de un jalón.
+
+11. **Acciones individuales**
+    Apostarle a UNA empresa. Requiere investigar de verdad —no solo que te
+    guste la marca— y tolerancia a que el valor se mueva fuerte.
+    Ejemplo: comprar una acción "porque te caía bien la marca" y que baje
+    30% es la lección más cara de aprender de golpe.
+
+12. **Bienes raíces**
+    Rentas, plusvalía, y por qué no es tan pasivo como lo pintan: hay
+    mantenimiento, vacancia, inquilinos que se atrasan, y no se vende de un
+    día para otro.
+    Ejemplo: vender una propiedad puede tardar semanas o meses, a diferencia
+    de una acción que vendes en segundos.
+
+13. **Cripto en tu portafolio**
+    Enlace directo con el resto del curso: como el 5-10% especulativo, no el
+    centro de tu estrategia.
+    Ejemplo: con $100,000 invertidos, cripto sería como máximo
+    $5,000-10,000 — de aquí arranca el Bloque 2 de este curso.
+
+## Unidad 4 — Cómo se ve en la práctica
+
+14. **Abrir tu primera cuenta de inversión**
+    Casas de bolsa/apps en México, qué revisar (regulación CNBV) antes de
+    meter un peso.
+    Ejemplo: verificar que la plataforma esté regulada es el primer filtro
+    contra estafas, antes de ver rendimientos.
+
+15. **Comisiones: el ladrón silencioso**
+    Un 1% anual suena poco, pero compuesto durante 30 años se come una parte
+    enorme de tu ganancia final — el mismo efecto del interés compuesto,
+    jugando en tu contra.
+    Ejemplo: 1% anual de comisión sobre $1,000,000 a 30 años puede costarte
+    más de $250,000 comparado con 0.1%.
+
+16. **Aportar cada mes (DCA)**
+    Por qué no sirve "esperar el mejor momento". DCA es invertir una
+    cantidad fija cada mes, sin importar si el precio subió o bajó.
+    Ejemplo: llevar 8 meses "esperando el mejor momento" para invertir
+    $2,000/mes normalmente cuesta más que haber empezado ya.
+
+17. **Rebalanceo**
+    Mantener tu mezcla de riesgo con el tiempo — no es fija de por vida.
+    Ejemplo: si tu meta era 70% acciones/30% CETES y ahora es 85/15 porque
+    las acciones subieron mucho, rebalancear regresa el riesgo a tu plan original.
+
+## Unidad 5 — Las trampas
+
+18. **Señales de estafa/pirámide**
+    Generalizado a "inversiones" en general: forex, bienes raíces fantasma,
+    etc. Verifica siempre si la plataforma está regulada (en México, CNBV).
+    Ejemplo: una app que promete duplicar tu dinero en 30 días con "trading
+    automático" es la señal más clásica de estafa.
+
+19. **FOMO y pánico**
+    Por qué el inversionista promedio le gana el mercado en teoría y luego
+    pierde por emoción. FOMO te empuja a comprar cuando ya subió; el pánico,
+    a vender cuando ya bajó.
+    Ejemplo: comprar algo porque "todo mundo en el grupo de WhatsApp ya se
+    hizo rico" es el ejemplo #1 de FOMO — y el más caro de aprender.
+
+20. **Influencers de dinero fácil**
+    Cómo detectar contenido que solo vende un curso, no información real.
+    Ejemplo: si el "análisis" siempre termina en "inscríbete a mi
+    mentoría de $5,000", el producto no es la inversión, eres tú.
+
+21. **Sesgos mentales**
+    Anclaje, aversión a la pérdida, con mini-escenarios de decisión.
+    Ejemplo: aferrarte a vender solo cuando "recupere lo que pagué" (el
+    precio al que compraste) es aversión a la pérdida jugándote en contra.
+
+## Unidad 6 — Tu plan
+
+22. **Arma tu regla simple**
+    % ahorro, % fondo de emergencia, % inversión, según edad/meta.
+    Ejemplo: alguien de 25 años ahorrando para 30 años después puede tolerar
+    más riesgo que alguien que necesita ese dinero en 2 años.
+
+23. **Impuestos: lo básico**
+    Las ganancias que obtienes al invertir suelen estar sujetas a ISR,
+    aunque la forma en que se cobra cambia según el instrumento: en algunos
+    el banco/casa de bolsa retiene automático, en otros lo declaras tú. No
+    es el tema más divertido, pero ignorarlo puede salirte caro después —
+    esto es un mapa general, no consejo fiscal; para tu caso, un contador es
+    tu mejor aliado.
+    Ejemplo: CETES y la mayoría de instrumentos en México generan una
+    retención automática — no te llega "limpio" el 100% de la ganancia.
+
+24. **Retiro: Afore vs. invertir por tu cuenta**
+    Qué hace el Afore, por qué no basta solo con eso.
+    Ejemplo: para la mayoría, lo que junta el Afore por sí solo no alcanza
+    para mantener el mismo nivel de vida al retirarte — por eso conviene
+    complementarlo con aportaciones voluntarias o inversión aparte.
+
+25. **Repaso final + certificado**
+    Cierre del Bloque 1: certifica que sabes armar el orden que protege —
+    colchón, deuda cara, horizonte, diversificar, impuestos — y que
+    reconoces una promesa de ganancia demasiado buena para ser real.
+    Ejemplo: el plan "aburrido" — tiempo, diversificación y constancia, no
+    adivinar el futuro — es casi siempre el que gana. De aquí saltas a
+    cripto con esas mismas reglas ya interiorizadas.
+
+============================================================
+BLOQUE 2 — CRIPTO FUNCIONAL — de cero a operar con cabeza en Dasus
+============================================================
+Aquí es donde entra la lección 13 del Bloque 1 ("Cripto en tu portafolio"):
+las mismas reglas de riesgo/ganancia, interés compuesto, diversificación,
+comisiones e impuestos que ya repasaste aplican también dentro de cripto —
+solo que con más volatilidad y una forma distinta de custodia. De aquí en
+adelante, el curso se vuelve 100% cripto, usando Dasus
+(dasus.gitbook.io/dasus-docs) como plataforma real de práctica. Progresión
+BÁSICO → INTERMEDIO → AVANZADO.
+
+## Unidad 7 — Qué es cripto y por qué importa
+Reestructurada en v2 — 11 lecciones (antes 8): entra primero el contexto de
+dinero digital / CBDC, para que "wallet propia" tenga un porqué real antes
+de enseñarla como técnica.
+
+26. **Tu dinero ya es 90% digital aunque no lo veas**
+    Tu sueldo no llega en billetes: llega como un número que cambia en la
+    base de datos de tu banco. Ya confías en dinero digital todos los días,
+    solo que no lo llamas así.
+    Ejemplo: se cae la app del banco un rato y, aunque tengas saldo de
+    sobra, no puedes pagar nada hasta que vuelva — el dinero seguía ahí,
+    pero dependías 100% de que el sistema del banco funcionara.
+
+27. **Los 4 tipos de dinero digital**
+    Bancario (el número en tu app de BBVA/Santander/etc.), stablecoin
+    (USDT/USDC, cripto que vale ~$1 dólar), CBDC (peso digital emitido
+    directo por el banco central) y Bitcoin (descentralizado, sin dueño ni
+    emisor). Los 4 "son un número en una pantalla", pero quién los controla
+    y qué tan programables son cambia completamente.
+    Ejemplo: un vale de despensa es dinero "programable" — solo sirve en
+    ciertas tiendas, para ciertas cosas. Los 4 tipos de dinero digital se
+    diferencian, sobre todo, en cuánto de ese control tiene alguien más
+    sobre tu dinero.
+
+28. **CBDC: cuando el gobierno hace su propia cripto**
+    CBDC = moneda digital de banco central. Nigeria lanzó el eNaira en
+    2021; China opera el e-CNY (yuan digital) a gran escala; Banxico en
+    México ha hecho pruebas piloto sin fecha pública confirmada de
+    lanzamiento aún. Ventaja real: pagos instantáneos, sin intermediarios.
+    Riesgo real: puede ser programable, rastreable y hasta caducar.
+    Ejemplo: el e-CNY chino está construido para poder programarse —
+    técnicamente se le puede poner fecha de caducidad a un saldo, o
+    limitarlo a ciertos tipos de compra, algo que un billete físico nunca
+    podría hacer.
+
+29. **El riesgo de que todo sea digital y rastreable**
+    Congelamiento de cuentas, vigilancia total de en qué gastas, exclusión
+    si "no calificas", y programabilidad (que alguien más decida qué SÍ
+    puedes comprar con tu dinero). Sin efectivo de respaldo, no tienes plan B.
+    Ejemplo real: en 2022, Canadá invocó la Ley de Emergencias y congeló
+    alrededor de 210 cuentas bancarias (~$7.8 millones de dólares) ligadas
+    a las protestas de transportistas, sin necesitar orden judicial previa.
+    Ese mismo año, Nigeria limitó los retiros de efectivo en cajeros a
+    apenas ~$225 dólares por semana (y luego bajó el límite de retiro en
+    tiendas a ~$45 dólares al día) específicamente para forzar el uso del
+    eNaira. Ninguno de los dos casos necesitó que tu dinero "desapareciera"
+    — bastó con que alguien más decidiera que no podías usarlo.
+
+30. **Cómo protegerte: efectivo, diversificación y autocustodia**
+    Por eso importa tener opciones: una parte en efectivo, una parte en el
+    banco, y una parte en autocustodia (una wallet que solo tú controlas).
+    No es paranoia, es no depender de un solo sistema que alguien más puede
+    apagar, congelar o programar.
+    Ejemplo: tu "colchón digital" es tener una wallet con tu frase semilla
+    guardada — el equivalente cripto de no meter TODOS tus ahorros a un
+    solo banco.
+
+31. **Wallets: tu wallet vs. tu cuenta en un exchange**
+    Una wallet es tuya de verdad, como el dinero bajo el colchón. Una
+    cuenta en un exchange es como tener el dinero en la caja fuerte de otra
+    persona.
+    Ejemplo: si el exchange cierra o te bloquea la cuenta, tu dinero se
+    queda atorado ahí. Si tu wallet es tuya, nadie más tiene la llave.
+
+32. **Not your keys, not your coins**
+    "No custodio" significa que tus fondos nunca pasan por las manos de la
+    plataforma — están en TU cuenta todo el tiempo, no en la de ellos. Así
+    opera Dasus.
+    Ejemplo: es la diferencia entre dejar tu coche en un valet parking
+    (ellos tienen las llaves mientras tanto) y manejarlo tú mismo hasta el
+    cajón.
+
+33. **Conectar con solo un correo**
+    Puedes empezar a operar sin instalar nada raro: una "llave de sesión"
+    se crea para ti y firma operaciones simples, sin darle a nadie el
+    control total de tu dinero.
+    Ejemplo: es como darle a un valet una llave que solo mueve el coche del
+    estacionamiento a la salida — no puede sacarlo a la calle, venderlo, ni
+    llevárselo.
+
+34. **INTERACCIÓN — Abre tu wallet descentralizada de verdad (no-custodia)**
+    Ejercicio funcional: instalas una wallet real (MetaMask/Rabby/OneKey),
+    generas tu frase semilla, la guardas físicamente (nunca en foto ni en la
+    nube) y confirmas que la entendiste antes de seguir.
+    Decisión del nodo: "¿A quién le puedes compartir tu frase semilla?"
+    (respuesta correcta: a nadie, nunca, ni a "soporte técnico").
+
+35. **INTERACCIÓN — Abre una cuenta en un exchange centralizado (CEX)**
+    Te registras en un exchange centralizado (correo + KYC), ves dónde queda
+    tu dinero (en SU custodia, no en la tuya) y comparas contra el nodo anterior.
+    Ejemplo: es como abrir una cuenta en un banco — el banco (no tú) es
+    quien físicamente resguarda tu dinero.
+
+36. **Centralizada vs. descentralizada vs. CBDC: la tabla que debes memorizar**
+    3 columnas: CEX (Binance-style), Wallet propia (la tuya), CBDC (peso
+    digital de gobierno). Quién puede congelar tu saldo, quién puede ver
+    cada movimiento, y quién puede programar cómo lo gastas — en las 3, la
+    respuesta cambia.
+    Decisión del nodo: elegir cuál usarías para "ahorros a largo plazo" y
+    cuál para "operar seguido en Dasus".
+
+## Unidad 8 — Tu primer contacto con la plataforma
+
+37. **Getting Started: conectar, fondear, primera operación**
+    Los 3 pasos mínimos para pasar de "mirar" a "operar de práctica".
+    Ejemplo: como abrir una cuenta de banco, meterle $500 y hacer tu primera
+    transferencia de prueba — nada más que aquí es cripto.
+
+38. **Web Terminal vs. Lite Mode**
+    La vista "pro" y la vista simple, cuál usar según tu nivel.
+    Ejemplo: Lite Mode es como manejar en automático; Web Terminal es como
+    manejar de "stick" — más control, más para aprender.
+
+39. **Fondear tu cuenta**
+    Depósitos, redes, qué es un Swap y cuándo lo necesitas.
+    Ejemplo: un swap es como cambiar dólares por euros en el aeropuerto,
+    pero de una cripto a otra, en segundos.
+
+40. **Redes y direcciones: el error que no tiene reversa**
+    Cada red (Ethereum, Arbitrum, Solana, etc.) es un camino distinto para
+    mover cripto. Mandar algo a la dirección correcta pero por la red
+    equivocada casi siempre significa perderlo para siempre — no hay
+    "deshacer" ni banco al que llamar a reclamar.
+    Ejemplo: es como enviar una carta a un código postal que no existe: no
+    rebota a tu buzón, simplemente se pierde en el camino.
+    Decisión del nodo: antes de cualquier depósito real, verifica DOS veces
+    que la red de origen y la red de destino sean exactamente la misma.
+
+41. **Leer tu Portfolio sin que te dé pánico**
+    Ver números en rojo no significa que ya perdiste.
+    Ejemplo: si tu casa baja de precio en el papel pero no la vendes, no
+    perdiste nada todavía. Con cripto es igual mientras no cierres la posición.
+
+42. **Seguridad básica: Sub-Accounts y Guardian Mode**
+    Separar tu dinero de práctica del real.
+    Ejemplo: usar una sub-cuenta chica para "probar cosas nuevas" y otra
+    aparte, más protegida, para lo que sí te importa no perder.
+
+43. **INTERACCIÓN — Conecta tu wallet real a Dasus y haz tu primera orden**
+    Cierre funcional de la unidad: conectas la wallet (o cuenta CEX) de la
+    Unidad 7, autorizas la llave de sesión, depositas un monto chico de
+    prueba ($200-500) verificando la red (lección 40) y colocas UNA orden
+    límite real, chica, de práctica.
+    Pasos: 1) Connect → wallet o correo. 2) Firma la autorización revisando
+    el tope de comisión. 3) Deposita el monto de prueba, red verificada.
+    4) Elige un mercado spot conocido (ej. BTC). 5) Coloca una orden límite,
+    no de mercado. 6) Revisa tu Portfolio y confirma la orden.
+    Decisión del nodo: "¿Qué SÍ puede hacer la llave de sesión, y qué NUNCA
+    podrá hacer?" (repaso obligado antes de soltarte con dinero real).
+
+## Unidad 9 — Spot vs. perpetuos
+
+44. **Spot: comprar y ya**
+    Lo mismo que ya viste en el Bloque 1, aplicado a cripto.
+    Ejemplo: comprar 0.01 BTC es como comprar una acción: la tienes hasta
+    que decidas venderla.
+
+45. **Qué es un perpetuo (perp)**
+    El contrato que apuesta al precio de algo sin comprarlo de verdad, y que
+    nunca "vence".
+    Ejemplo: como apostar con un amigo si el precio de la gasolina sube o
+    baja este mes, sin comprar un tanque de gasolina para apostar.
+
+46. **Long y short: ganar cuando sube o cuando baja**
+    "Long" = apuestas a que sube. "Short" = apuestas a que baja.
+    Ejemplo: si crees que el peso se va a devaluar frente al dólar, un short
+    es la versión de "apostarle a que algo va para abajo" y ganar por eso.
+
+47. **Fees: el ladrón silencioso, versión cripto**
+    Cada operación tiene una comisión chiquita que se acumula igual que el
+    1% anual de la Unidad 4 del Bloque 1.
+    Ejemplo: pagar 0.05% por operación no suena a nada, hasta que haces 200
+    operaciones al mes.
+
+## Unidad 10 — Órdenes y ejecución
+
+48. **Tipos de orden: mercado, límite, stop**
+    Mercado = "cómprame YA". Límite = "solo si llega a este precio". Stop =
+    "vende automático si cae hasta aquí".
+    Ejemplo: una orden límite es como decirle al Uber "solo lo pido si
+    cuesta menos de $80".
+
+49. **Take Profit / Stop Loss**
+    Programar tu salida ANTES de entrar, no cuando ya estás en pánico.
+    Ejemplo: como ponerte una alarma para irte de la fiesta a las 11pm
+    ANTES de llegar.
+
+50. **Scale Orders y TWAP: entrar/salir en partes**
+    En vez de meter todo de un golpe, repartir en varias compras/ventas.
+    Ejemplo: como comprar despensa poco a poco durante el mes en vez de
+    gastar toda la quincena el primer día.
+
+51. **Entry Price & PnL: cómo se calcula tu ganancia real**
+    Depende del precio al que ENTRASTE, y hay que descontar comisiones y funding.
+    Ejemplo: si compraste a $100 y ahora vale $110, tu PnL no es "$10
+    limpios" si ya pagaste comisiones en la entrada y en la salida.
+
+## Unidad 11 — Margen y el riesgo que la gente ignora
+
+52. **Margen y apalancamiento**
+    Operar con más dinero del que tienes — multiplica ganancias y pérdidas
+    en la misma proporción.
+    Ejemplo: con apalancamiento 10x, un movimiento de 10% en tu contra puede
+    borrar el 100% de lo que pusiste.
+
+53. **Funding Rate**
+    Pago periódico entre longs y shorts, para mantener el precio del
+    contrato pegado al precio real.
+    Ejemplo: si casi todos apuestan a que sube, le pagan a los que apuestan
+    a que baja — como una renta por mantener la apuesta abierta.
+
+54. **Liquidación: lo que todo principiante ignora hasta que le pasa**
+    Si el precio se mueve mucho en tu contra, la plataforma cierra tu
+    posición sola.
+    Ejemplo: como cuando el casino te quita las fichas automáticamente
+    antes de que debas dinero que no tienes.
+
+55. **Simulador de liquidación**
+    Calcular ANTES de abrir una posición a qué precio exacto te liquidarían.
+    Ejemplo: con $100 y apalancamiento 5x en BTC, te liquidan si BTC cae 20%.
+
+## Unidad 12 — Que tu cripto trabaje por ti
+
+56. **Grid Bots**
+    Robot que compra bajo y vende alto dentro de un rango de precio que tú
+    defines. Si el precio se sale de ese rango (rompe hacia arriba o hacia
+    abajo), el bot deja de funcionar como esperabas.
+    Ejemplo: una "trampa" que compra cada vez que el precio baja un poquito
+    y vende cada vez que sube un poquito, todo el día, sola — pero si el
+    precio se desploma fuera del rango, la trampa no te protege de esa caída.
+
+57. **Vaults**
+    Metes tu cripto a una estrategia ya armada y gestionada por otros — no
+    es "sin riesgo" solo porque no la manejas tú: la estrategia puede perder.
+    Ejemplo: como meter tu dinero a un fondo de inversión en vez de comprar
+    acciones tú mismo — le pagas a alguien por decidir, no le pagas por
+    garantizarte una ganancia.
+
+58. **Staking**
+    Dejar tu cripto "trabajando" para la red a cambio de una recompensa —
+    a veces con tu dinero bloqueado un tiempo, sin poder sacarlo cuando quieras.
+    Ejemplo: parecido a un plazo fijo en el banco, con una diferencia
+    importante: el banco tiene seguro de depósitos (IPAB en México);
+    staking no tiene ese respaldo si algo sale mal con el protocolo.
+
+59. **Copy Trading**
+    Copiar automáticamente las operaciones de otro trader, con los ojos abiertos.
+    Ejemplo: como seguir la receta de un chef; si él se equivoca, tu
+    platillo también sale mal.
+
+60. **Comunidades y Referral Program**
+    El lado social de la plataforma.
+    Ejemplo: como un programa de "recomienda a un amigo" de cualquier app,
+    aplicado a trading.
+
+## Unidad 13 — Cómo funciona Dasus por dentro
+
+61. **De dónde sale la liquidez**
+    HyperCore/Hyperliquid: liquidez de protocolo público, no una mesa privada.
+    Ejemplo: un restaurante nuevo que compra en el mismo mercado central que
+    usan todos los restaurantes serios de la ciudad — mismos precios.
+
+62. **Quién es dueño de tu dinero**
+    No-custodia real: los fondos viven en tu cuenta de Hyperliquid, no en Dasus.
+    Ejemplo: tu dinero en tu propia caja de seguridad; Dasus solo te da la
+    pantalla para verlo y moverlo.
+
+63. **La llave de sesión (agent wallet)**
+    Qué puede hacer por ti (operar) y qué nunca puede hacer (retirar,
+    transferir, cambiar de dueño).
+    Ejemplo: como una tarjeta que solo cobra en la caja registradora, pero
+    no puede vaciar la caja fuerte.
+
+64. **El recorrido de una orden**
+    Firmas en tu dispositivo → protocolo → liquidación on-chain → Dasus
+    solo LEE el resultado.
+    Ejemplo: firmar un cheque tú mismo — Dasus ve tu estado de cuenta, pero
+    nunca tuvo el cheque en la mano.
+
+65. **Cómo cobra Dasus (builder codes)**
+    Comisión on-chain con tope fijado por el protocolo (Pro: 0.05%
+    perps/0.50% spot taker; Lite: 0.10%/1.00%; maker = 40% de esas tasas).
+    Ejemplo: una propina fija por usar la mesa, no una comisión por lo que
+    ordenaste que salió mal — no ganan cuando te liquidan.
+
+66. **La prueba de la desaparición**
+    Si Dasus cerrara mañana, tu dinero seguiría intacto en Hyperliquid.
+    Ejemplo: como si la sucursal de tu banco cerrara, pero tu dinero
+    siguiera ahí y pudieras sacarlo en cualquier otra sucursal al día siguiente.
+
+## Unidad 14 — Riesgos reales y letra chica
+
+67. **Los 4 riesgos que sí existen**
+    De mercado (liquidación), de protocolo (falla Hyperliquid), de interfaz
+    (cae Dasus), de tu propia wallet (pierdes acceso = pierdes todo).
+    Ejemplo: perder la frase semilla es como perder la única llave de una
+    caja fuerte sin cerrajero de emergencia.
+
+68. **Estafas específicas de cripto**
+    Rug pulls (el proyecto desaparece con el dinero de los inversionistas),
+    airdrops falsos que piden conectar tu wallet a un sitio malicioso, y
+    "soporte técnico" que te escribe por DM pidiendo tu frase semilla o tu
+    llave privada — ninguno de estos tiene un equivalente idéntico en la
+    banca tradicional.
+    Ejemplo: nadie de Dasus, de Hyperliquid, ni de ningún soporte legítimo
+    te va a pedir tu frase semilla o tu llave privada JAMÁS — ni por chat,
+    ni por correo, ni por teléfono. Pedirla es, por sí solo, la prueba de
+    que es una estafa.
+
+69. **Sociedad vs. licencia financiera**
+    Dasus LTD, en proceso de constitución en Companies House (Reino Unido),
+    da transparencia legal, pero NO es autorización de la FCA ni de ningún
+    regulador.
+    Ejemplo: es la diferencia entre el registro fiscal de un restaurante y
+    su permiso sanitario — dos papeles distintos.
+
+70. **Leer Terms of Service y Risk Disclosure**
+    No es letra chica de adorno.
+    Ejemplo: como leer el contrato antes de firmar un crédito, no después
+    de que ya te cobraron algo que no esperabas.
+
+## Unidad 15 — Tu plan para operar con cabeza
+
+71. **Comparativa final: tradicional vs. cripto vs. CBDC**
+    Mismo principio de riesgo/ganancia del Bloque 1, pero cada uno cambia
+    quién tiene la custodia real de tu dinero: tú (wallet propia), un
+    intermediario regulado (broker/CEX), o el gobierno (CBDC).
+    Ejemplo: 25 años ahorrando para 30 años después puede tolerar más
+    cripto que alguien que necesita ese dinero en 2 años — el riesgo de
+    custodia se suma al riesgo de precio, no lo reemplaza.
+
+72. **Checklist antes de tu primera operación real**
+    Fondos separados, stop loss puesto, entendiste el apalancamiento, red
+    verificada, leíste los riesgos.
+    Ejemplo: como el checklist de un piloto antes de despegar — 5 minutos
+    que evitan un dolor de cabeza de horas.
+
+73. **Errores de principiante**
+    FOMO, apalancamiento excesivo, ignorar el funding, mandar a la red
+    equivocada, no leer los términos.
+    Ejemplo: comprar algo porque "todo mundo en el grupo ya se hizo rico" —
+    el ejemplo #1 de FOMO, versión cripto.
+
+74. **Repaso final + certificado**
+    Cierre del curso completo (Bloques 1 y 2) con anillo de progreso y confeti.
+    Ejemplo: de "nunca toqué cripto" a "entiendo cómo funciona y opero con
+    un plan" — certificado único para todo el curso.
+
+============================================================
+BLOQUE 3 — 🎓 MAESTRÍA DASUS — POR APLICACIÓN, después de terminar el curso
+============================================================
+El curso completo (Bloques 1 y 2, Unidades 1-15) es de acceso abierto y
+termina en teoría bien aprendida. La Maestría empieza donde el curso se
+queda corto a propósito: llevar ese conocimiento a la PRÁCTICA real, con
+seguimiento, con dinero de verdad y con resultados medibles — no es más
+teoría, es hacer.
+
+Nota de formato: a partir de aquí las lecciones son más cortas y sin
+"Ejemplo" — a propósito. Son tareas de práctica real, no conceptos para
+explicar con una analogía; cada una se evalúa con lo que tú produces
+(bitácora, plan, resultados), no con un quiz de opción múltiple.
+
+Solo se puede aplicar habiendo terminado el certificado de la Unidad 15.
+Mecanismo de aplicación/autorización: por definir (no se construye todavía,
+solo se deja el contenido ordenado para cuando se autorice).
+
+## Unidad 16 — Tu primer ciclo de trading real, con seguimiento
+
+75. **Diagnóstico inicial** — cuánto capital real vas a destinar, tu perfil
+    de riesgo real (no el que dijiste en el Bloque 1, el que de verdad toleras).
+
+76. **Plan de trading por escrito** — reglas de entrada, de salida, de
+    tamaño de posición y de cuándo NO operar, antes de tocar un peso real.
+
+77. **Bitácora de operaciones** — registrar cada operación real con su
+    razón de entrada/salida, para revisar patrones propios después.
+
+78. **Primer ciclo evaluado (4-6 semanas)** — operar con capital real y
+    reglas fijas, con revisión de la bitácora al final del ciclo.
+
+## Unidad 17 — Estrategia y herramientas de nivel práctico
+
+79. **Arma tu propio Grid Bot o Vault** — configurarlo con parámetros
+    propios (no los que trae por default), justificando cada parámetro.
+
+80. **Gestión de riesgo por portafolio** — cuánto apalancamiento y cuántas
+    posiciones abiertas a la vez tolera TU capital, no una regla genérica.
+
+81. **Analizar tu propio funding y comisiones pagadas** — auditar tus
+    últimas operaciones reales: cuánto te costó de verdad operar.
+
+82. **(Opcional/exploratorio) Usar la API de Hyperliquid** — para quien
+    quiere automatizar sus propias reglas más allá de los bots de Dasus.
+
+## Unidad 18 — Cierre de Maestría
+
+83. **Revisión con mentor/comunidad** — presentar tu ciclo de trading real y
+    recibir retroalimentación (mecánica de mentoría: por definir).
+
+84. **Certificado de Maestría Dasus** — distinto al certificado del curso:
+    se obtiene por resultados de un ciclo real evaluado, no por completar lecciones.
+
+---
+
+**Fuentes / referencia del contenido real:**
+- https://dasus.gitbook.io/dasus-docs (Platform, Trading, Earn, Guides & FAQ, Legal) — comisiones verificadas en vivo en `platform/fees.md`
+- "Cómo funciona Dasus" (PDF, sep. 2026) — liquidez, arquitectura, custodia, ingresos y riesgos: base de la Unidad 13
+- `curso-inversiones.html` — origen de la lección de impuestos (Unidad 6), adaptada aquí a la numeración del documento maestro
+- Nigeria eNaira / límites de retiro de efectivo dic. 2022-ene. 2023 (~$225 USD/semana en cajero, luego ~$45 USD/día en cashback) para forzar adopción — fuente: NFCW, Cointelegraph, PYMNTS (lección 28-29)
+- Canadá 2022, Ley de Emergencias: ~210 cuentas bancarias (~$7.8M USD) congeladas ligadas a protestas de transportistas — fuente: CBC News (lección 29)
+- China, e-CNY (yuan digital): capacidad de programabilidad, incl. fecha de caducidad y restricciones de uso por categoría, confirmada por funcionarios del PBOC — fuente: dlnews.com, fanaticalfuturist.com (lección 28)
+- Banxico, peso digital: pruebas piloto vía proyecto del BIS, sin fecha pública confirmada de lanzamiento al público (lección 28)
+
+**Mecánica de gamificación (un solo sistema para todo el curso):**
+- Corazones: se pierde 1 al fallar una decisión de alto riesgo (estafa en Bloque 1, riesgo de CBDC programable en Unidad 7 lección 29, mal cálculo de liquidación o estafa cripto en Bloque 2), no en simuladores exploratorios
+- XP: +10 por lección completada, +5 extra por acertar la decisión a la primera
+- Racha: contador de días seguidos entrando al curso
+- Caminito: nodos conectados por unidad, con "jefe" de repaso al final de cada unidad (mini-quiz de 3-5 preguntas)
+- La Unidad 7 incluye interacciones reales: crear una wallet no-custodia de verdad y abrir una cuenta en un exchange centralizado, más una tabla comparativa CEX vs Wallet vs CBDC como artefacto de repaso
+- A partir de Unidad 9, los simuladores usan datos/mecánicas reales de Dasus (fees, funding rate, liquidación)
+- Bloque 3 no usa corazones/XP — se evalúa por bitácora y resultados de un ciclo real, no por lecciones completadas

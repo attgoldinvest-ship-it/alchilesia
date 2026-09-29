@@ -1,0 +1,6 @@
+node_modules/
+.next/
+.env*.local
+*.log
+# Fuentes originales de imágenes (pesadas, ya procesadas en public/)
+img/

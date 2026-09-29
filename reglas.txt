@@ -1,0 +1,106 @@
+## REGLAS DEL DESARROLLO — proyecto Dasus (curso + plataforma)
+
+Reglas de trabajo para cualquiera que edite este proyecto (yo incluido).
+No es documentación del producto — es CÓMO se trabaja aquí. Se actualiza
+cuando se detecta un problema real, no por anticipado.
+
+---
+
+### 1. Fuente única — nada de versiones sueltas
+
+- El temario vive en UN solo archivo: `temario-maestro.txt`. No se crean
+  copias, recortes ni "versión rápida" en otro lado.
+- Si un documento reemplaza a otro, el viejo se BORRA (no se deja "por si
+  acaso") y se actualiza cualquier referencia rota (ej. `MAPA_GLOBAL.md`).
+- Antes de borrar algo que no creaste tú en esta sesión, revisa qué es y
+  avisa — no asumas que ya no sirve.
+
+### 2. Nunca inventar contenido de Dasus
+
+- Cualquier dato de la plataforma (comisiones, features, arquitectura,
+  nombres de producto) se verifica contra `dasus.gitbook.io/dasus-docs` o
+  el PDF oficial ANTES de escribirlo — nunca por memoria ni suposición.
+- Si algo no está confirmado en una fuente real, se marca explícitamente
+  como "por definir" o "pendiente de decidir" — no se rellena a ciegas.
+- Cifras exactas (comisiones, topes, %) se citan tal cual aparecen en la
+  fuente, con la fuente anotada.
+
+### 3. Numeración continua, siempre verificada
+
+- Lecciones y unidades se numeran de corrido, sin huecos ni saltos.
+- Cualquier inserción o borrado de una lección obliga a renumerar TODO lo
+  que sigue en el documento — no se dejan números repetidos ni faltantes.
+- Después de tocar la numeración, se verifica con un chequeo automático
+  (no de vista) antes de dar por terminado el cambio.
+- Toda referencia cruzada interna ("ver lección X", "Unidad Y del Bloque Z")
+  se revisa después de renumerar — una referencia que apunta a lo
+  incorrecto es peor que no tener referencia.
+
+### 4. Formato de lección (Bloques 1 y 2)
+
+- Cada lección conceptual: **título** + 1-3 líneas de explicación clara +
+  una línea "Ejemplo:" con analogía o caso concreto en pesos/situaciones
+  cotidianas mexicanas.
+- Nada de tecnicismo sin explicar en la primera mención.
+- Las lecciones tipo "INTERACCIÓN" son ejercicios funcionales (algo que el
+  alumno hace de verdad), no solo teoría — llevan pasos numerados cuando
+  aplica.
+- El Bloque 3 (Maestría) usa un formato distinto a propósito — tareas
+  cortas, sin "Ejemplo", evaluadas por resultado real, no por quiz. Esto
+  se explica en el propio bloque, no se asume que se entiende solo.
+
+### 5. Contenido de producción (teoría + preguntas jugables)
+
+- Vive aparte del temario, en `contenido/produccion-*.js`, con el mismo
+  formato `TEORIA`/`PREGUNTAS` que ya usa `curso-inversiones.html`.
+- Ids con prefijo `tm_` + lección relativa a la unidad (ej. `tm_u7l1` =
+  primera lección de la Unidad 7 — NO el número absoluto del temario
+  maestro). Esto es a propósito: si el temario se renumera globalmente
+  (ya pasó una vez, con v2), los archivos de producción no necesitan
+  tocarse mientras el orden relativo dentro de cada unidad no cambie.
+- Cada lección de TEORIA lleva un campo `contenedor` (uno de los 10 estilos
+  del constructor en React: clasico/pareja/caso/duelo/orden/slider/multi/
+  classify/interaccion). **Todas las preguntas de esa lección usan ese
+  mismo `tipo`** — no se mezclan estilos distintos dentro de un mismo nodo
+  (un nodo, un estilo visual consistente). Corregido 28 sep. 2026: antes se
+  variaba el tipo pregunta a pregunta dentro de la misma lección — eso ya
+  no aplica.
+- Mínimo 3 preguntas por lección para contenedores de pregunta
+  independiente (clasico/caso/duelo/interaccion). Para contenedores de
+  "bloque único" (pareja/orden/clasificar), donde una sola pregunta ya
+  contiene varias parejas/pasos/items, no se fuerzan 3 copias artificiales
+  del mismo bloque — se prioriza 1 ejercicio rico y consistente sobre
+  cumplir un mínimo a costa de repetir contenido.
+- Todo cálculo en preguntas tipo `slider` se verifica con la fórmula real
+  antes de fijar `correcta`/`tolerancia` — no se estima a ojo.
+
+### 6. No construir lo que no se ha autorizado
+
+- El mecanismo de aplicación/acceso a la Maestría Dasus NO se construye
+  hasta que se autorice explícitamente — se deja el contenido ordenado,
+  nada más.
+- Cambios de alcance grande (ej. "hazlo un tema de aplicación exclusiva")
+  se confirman con el usuario antes de ejecutarlos si hay ambigüedad real
+  sobre qué tan lejos llevarlos.
+
+### 7. Mapas de estado, siempre honestos
+
+- `MAPA_GLOBAL.md` y `contenido/MAPA_PRODUCCION.md` reflejan el estado
+  REAL del proyecto — 🟢/🟡/🔴/⚪ según corresponda, nunca inflado.
+- Se actualizan en el mismo momento en que cambia lo que describen, no
+  después ni "cuando haya tiempo".
+- Un conteo (ej. "X de Y lecciones") se recalcula, no se copia del mensaje
+  anterior sin verificar.
+
+### 8. Calidad — el criterio real de "10/10"
+
+- No existe el 10 perfecto; el objetivo práctico es 8-9: contenido
+  verificado, claro para alguien sin experiencia, con ejemplo aplicable,
+  sin errores de referencia ni de cálculo.
+- Una calificación se da con criterios desglosados (no un número suelto) y
+  señalando qué se revisó específicamente — igual se corrige antes de
+  calificar, no se infla la nota para quedar bien.
+
+---
+*Este archivo se actualiza cuando se aprende algo nuevo sobre cómo trabajar
+mejor este proyecto — no es una lista cerrada.*
