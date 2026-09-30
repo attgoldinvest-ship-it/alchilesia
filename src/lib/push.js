@@ -12,6 +12,25 @@ export function soportaPush() {
   return typeof window !== "undefined" && "serviceWorker" in navigator && "PushManager" in window;
 }
 
+// El botón "Activar notificaciones" arrancaba SIEMPRE en "idle" al volver
+// a abrir la app, aunque ya estuvieran activadas de antes — notifEstado
+// vivía solo en memoria del componente, nunca se revisaba el estado real.
+// Esto consulta directo al navegador (Notification.permission +
+// pushManager.getSubscription(), la fuente de verdad real, no la base de
+// datos) si ya existe una suscripción activa para no volver a pedirla.
+export async function notificacionesActivas() {
+  if (!soportaPush()) return false;
+  if (Notification.permission !== "granted") return false;
+  try {
+    const registro = await navigator.serviceWorker.getRegistration("/sw.js");
+    if (!registro) return false;
+    const sub = await registro.pushManager.getSubscription();
+    return !!sub;
+  } catch {
+    return false;
+  }
+}
+
 export async function activarNotificaciones(userId) {
   if (!soportaPush()) return { ok: false, motivo: "no-soportado" };
 

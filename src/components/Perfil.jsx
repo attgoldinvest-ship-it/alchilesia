@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Flame, Gem, Heart, Medal, Trophy, Lock, LogOut, Bell, Shield } from "lucide-react";
 import Link from "next/link";
-import { activarNotificaciones, soportaPush } from "@/lib/push";
+import { activarNotificaciones, notificacionesActivas, soportaPush } from "@/lib/push";
 import { urlAvatar } from "@/lib/avatares";
 
 const RECARGA_MIN = 5;
@@ -21,6 +21,18 @@ export default function Perfil({ perfil, userId, onVerCertificado, onCerrarSesio
   const [notifEstado, setNotifEstado] = useState("idle"); // idle | pidiendo | on | off
   const [notifError, setNotifError] = useState("");
   const proximo = proximoCorazonTexto(perfil);
+
+  // Antes esto arrancaba en "idle" siempre, aunque ya estuvieran activadas
+  // de una visita anterior — el botón de "Activar" volvía a aparecer cada
+  // vez que se cerraba y abría la app. Ahora se revisa el estado real del
+  // navegador al montar.
+  useEffect(() => {
+    let activo = true;
+    notificacionesActivas().then((si) => {
+      if (activo && si) setNotifEstado("on");
+    });
+    return () => { activo = false; };
+  }, []);
 
   async function activarNotifs() {
     if (!userId || notifEstado === "pidiendo") return;
