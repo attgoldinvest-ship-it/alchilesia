@@ -43,9 +43,14 @@ export async function activarNotificaciones(userId) {
 
 export async function enviarPush(userId, { title, body, url }) {
   try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return; // sin sesión real, no se manda nada
     await fetch("/api/push/send", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session.access_token}`,
+      },
       body: JSON.stringify({ userId, title, body, url }),
     });
   } catch (e) {

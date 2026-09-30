@@ -30,28 +30,31 @@ export default function NombreUsuario({ userId, email, sugerido, onGuardado }) {
     setGuardando(true);
     setError("");
 
-    const [r1] = await Promise.all([
+    const [r1, r2] = await Promise.all([
       supabase.from("profiles").update({ nombre: limpio, avatar }).eq("id", userId),
       email ? supabase.from("perfil_privado").upsert({ id: userId, email }) : Promise.resolve({ error: null }),
     ]);
 
     setGuardando(false);
-    if (r1.error) { setError("No se pudo guardar, intenta de nuevo."); return; }
+    if (r1.error || r2.error) {
+      setError("No se pudo guardar, intenta de nuevo.");
+      return;
+    }
     onGuardado({ nombre: limpio, avatar });
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-bg flex flex-col items-center px-8 gap-6 text-center overflow-y-auto py-10">
+    <div className="fixed inset-0 z-50 bg-bg flex flex-col items-center px-8 gap-8 text-center overflow-y-auto py-12">
       <div>
-        <h1 className="text-[24px] font-[800] tracking-[-0.03em]">¡Bienvenido!</h1>
-        <p className="text-[13px] text-muted mt-1.5 max-w-[280px]">
+        <h1 className="text-[26px] font-[800] tracking-[-0.03em]">¡Bienvenido!</h1>
+        <p className="text-[13px] text-muted mt-2 max-w-[280px] mx-auto leading-relaxed">
           Antes de arrancar, esto es lo que necesitas saber:
         </p>
       </div>
 
-      <div className="w-full max-w-[320px] flex flex-col gap-2.5">
+      <div className="w-full max-w-[320px] flex flex-col gap-3">
         {INSTRUCCIONES.map(({ Icono, texto }, i) => (
-          <div key={i} className="flex items-start gap-3 rounded-card bg-surface border border-border px-4 py-3 text-left">
+          <div key={i} className="flex items-start gap-3 rounded-card bg-surface border border-border px-4 py-3.5 text-left">
             <Icono size={15} className="text-accent shrink-0 mt-0.5" />
             <span className="text-[12px] text-muted leading-relaxed">{texto}</span>
           </div>
@@ -60,16 +63,18 @@ export default function NombreUsuario({ userId, email, sugerido, onGuardado }) {
 
       <div className="w-full max-w-[320px] h-px bg-border" />
 
-      <form onSubmit={guardar} className="w-full max-w-[320px] flex flex-col gap-3">
-        <input
-          autoFocus
-          value={valor}
-          onChange={(e) => setValor(e.target.value)}
-          maxLength={20}
-          placeholder="Tu nombre de usuario"
-          className="w-full py-3.5 px-4 rounded-chip bg-surface border-2 border-border focus:border-accent outline-none text-center font-semibold"
-        />
-        <p className="text-[11px] text-muted -mt-1">Este es el que van a ver los demás en el Ranking.</p>
+      <form onSubmit={guardar} className="w-full max-w-[320px] flex flex-col gap-5">
+        <div className="flex flex-col gap-2">
+          <input
+            autoFocus
+            value={valor}
+            onChange={(e) => setValor(e.target.value)}
+            maxLength={20}
+            placeholder="Tu nombre de usuario"
+            className="w-full py-3.5 px-4 rounded-chip bg-surface border-2 border-border focus:border-accent outline-none text-center font-semibold"
+          />
+          <p className="text-[11px] text-muted">Este es el que van a ver los demás en el Ranking.</p>
+        </div>
 
         {email && (
           <div className="flex items-center gap-2.5 px-4 py-3 rounded-chip bg-surface border border-border text-left">
@@ -78,9 +83,9 @@ export default function NombreUsuario({ userId, email, sugerido, onGuardado }) {
           </div>
         )}
 
-        <div className="text-left mt-1">
-          <p className="text-[11px] font-bold tracking-[0.14em] text-accent uppercase mb-2">Elige tu foto</p>
-          <div className="grid grid-cols-5 gap-2">
+        <div className="text-left">
+          <p className="text-[11px] font-bold tracking-[0.14em] text-accent uppercase mb-3">Elige tu foto</p>
+          <div className="grid grid-cols-5 gap-2.5">
             {AVATARES.map((a) => {
               const activo = a === avatar;
               return (
@@ -104,12 +109,12 @@ export default function NombreUsuario({ userId, email, sugerido, onGuardado }) {
           </div>
         </div>
 
-        {error && <p className="text-[12px] text-[#FF3B5C]">{error}</p>}
+        {error && <p className="text-[12px] text-[#FF3B5C] -mt-2">{error}</p>}
 
         <button
           type="submit"
           disabled={guardando || valor.trim().length < 3}
-          className="w-full py-3.5 rounded-chip bg-accent text-black font-bold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 mt-1"
+          className="w-full py-3.5 rounded-chip bg-accent text-black font-bold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100"
         >
           {guardando ? "Guardando…" : "Empezar"}
         </button>

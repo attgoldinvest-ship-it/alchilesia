@@ -27,6 +27,15 @@ create table if not exists public.progreso (
   primary key (user_id, leccion_id)
 );
 
+-- Columnas agregadas después de la creación inicial de `profiles` — `create
+-- table if not exists` NO las agrega a una tabla que ya existía, así que
+-- este ALTER es obligatorio para que el drift no vuelva a romper el
+-- guardado real (bug real: por esto el guardado de perfil/XP/corazones
+-- dejó de funcionar en producción — `es_admin` no existía y el trigger
+-- `evitar_auto_admin`, más abajo, la referencia).
+alter table public.profiles add column if not exists es_admin boolean not null default false;
+alter table public.profiles add column if not exists avatar text;
+
 alter table public.profiles enable row level security;
 alter table public.progreso enable row level security;
 
@@ -79,6 +88,13 @@ security definer
 set search_path = public
 as $$
 begin
+  -- Candado real: sin esto, cualquiera con la anon key podía llamar esta
+  -- función con el uid de OTRO usuario (los ids son públicos vía el
+  -- Ranking) y darle/quitarle XP a quien quisiera. Bug de seguridad real,
+  -- corregido — cada quien solo puede operar sobre su propio uid.
+  if uid <> auth.uid() then
+    raise exception 'No autorizado';
+  end if;
   update public.profiles set xp = xp + monto where id = uid;
 end;
 $$;
@@ -93,6 +109,9 @@ declare
   actual integer;
   nuevo integer;
 begin
+  if uid <> auth.uid() then
+    raise exception 'No autorizado';
+  end if;
   select corazones into actual from public.profiles where id = uid;
   nuevo := greatest(0, least(3, actual + delta));
   update public.profiles
@@ -122,6 +141,9 @@ declare
   ganadas integer;
   nuevo integer;
 begin
+  if uid <> auth.uid() then
+    raise exception 'No autorizado';
+  end if;
   select corazones, corazon_perdido_en into actual, perdido_en from public.profiles where id = uid;
   if actual >= 3 or perdido_en is null then
     return;
@@ -150,6 +172,9 @@ as $$
 declare
   ultima date;
 begin
+  if uid <> auth.uid() then
+    raise exception 'No autorizado';
+  end if;
   select ultima_actividad into ultima from public.profiles where id = uid;
   if ultima = current_date then
     return;
@@ -161,10 +186,18 @@ begin
 end;
 $$;
 
-grant execute on function public.sumar_xp(uuid, integer) to authenticated, anon;
-grant execute on function public.ajustar_corazones(uuid, integer) to authenticated, anon;
-grant execute on function public.registrar_actividad(uuid) to authenticated, anon;
-grant execute on function public.regenerar_corazones(uuid, integer) to authenticated, anon;
+-- Solo "authenticated" — ya no existe modo invitado (login con Google
+-- obligatorio), así que "anon" no necesita ni debe poder llamar estas
+-- funciones. Si venían otorgadas de una versión anterior con modo invitado,
+-- el revoke explícito las quita aunque ya no estén en este grant.
+grant execute on function public.sumar_xp(uuid, integer) to authenticated;
+grant execute on function public.ajustar_corazones(uuid, integer) to authenticated;
+grant execute on function public.registrar_actividad(uuid) to authenticated;
+grant execute on function public.regenerar_corazones(uuid, integer) to authenticated;
+revoke execute on function public.sumar_xp(uuid, integer) from anon;
+revoke execute on function public.ajustar_corazones(uuid, integer) from anon;
+revoke execute on function public.registrar_actividad(uuid) from anon;
+revoke execute on function public.regenerar_corazones(uuid, integer) from anon;
 
 -- 3) Suscripciones push (notificaciones reales) — 1 fila por dispositivo/navegador.
 create table if not exists public.push_subscriptions (
