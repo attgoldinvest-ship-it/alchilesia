@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Shield, Search, Users, Flame, Gem, CalendarOff } from "lucide-react";
+import { Shield, Search, Users, Flame, Gem, CalendarOff, LogOut } from "lucide-react";
 import Link from "next/link";
 import { useSesion } from "@/lib/useSesion";
 import { cargarPerfil } from "@/lib/progreso";
@@ -14,7 +14,7 @@ function diasInactivo(ultimaActividad) {
 }
 
 export default function AdminPage() {
-  const { usuario, cargando } = useSesion();
+  const { usuario, cargando, cerrarSesion } = useSesion();
   const [perfil, setPerfil] = useState(null);
   const [usuarios, setUsuarios] = useState(null);
   const [busqueda, setBusqueda] = useState("");
@@ -73,12 +73,20 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-bg text-white">
-      <header className="h-14 px-4 border-b border-border flex items-center gap-3 sticky top-0 bg-bg/90 backdrop-blur-xl z-10">
-        <Link href="/" className="text-muted"><ArrowLeft size={20} /></Link>
+      <header className="h-14 px-4 border-b border-border flex items-center justify-between sticky top-0 bg-bg/90 backdrop-blur-xl z-10">
         <div className="flex items-center gap-2">
           <Shield size={16} className="text-accent" />
           <span className="font-bold text-[15px]">Panel admin</span>
         </div>
+        {!esPreview && (
+          <button
+            onClick={cerrarSesion}
+            className="flex items-center gap-1.5 text-muted text-[12px] font-bold transition-transform active:scale-95"
+          >
+            <LogOut size={14} />
+            Cerrar sesión
+          </button>
+        )}
       </header>
 
       <main className="max-w-[860px] mx-auto px-5 py-7">

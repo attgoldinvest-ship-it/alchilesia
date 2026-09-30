@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
 import Camino from "@/components/Camino";
@@ -33,6 +34,7 @@ const PERFIL_PREVIEW = {
 const USUARIO_PREVIEW = { id: "preview-demo", email: "tu@correo.com", user_metadata: {} };
 
 export default function Home() {
+  const router = useRouter();
   const [tab, setTab] = useState("aprender");
   const { usuario: usuarioReal, cargando, continuarConGoogle, cerrarSesion } = useSesion();
   // esPreview SIEMPRE arranca en false (igual en servidor y cliente) — se
@@ -60,6 +62,13 @@ export default function Home() {
     cargarProgreso(usuarioReal.id).then(setProgreso);
     cargarPerfil(usuarioReal.id).then(setPerfil);
   }, [usuarioReal]);
+
+  // Cuenta admin — no ve la app de estudiante (Camino/Ranking/Perfil), va
+  // directo al panel. No aplica en vista previa (?preview=1), donde
+  // PERFIL_PREVIEW.es_admin siempre es false a propósito.
+  useEffect(() => {
+    if (!esPreview && perfil?.es_admin) router.replace("/admin");
+  }, [esPreview, perfil, router]);
 
   // Un solo efecto para las dos decisiones que dependen de la URL/localStorage
   // (nunca disponibles durante el render en el servidor) — todo secuencial,
@@ -200,6 +209,13 @@ export default function Home() {
 
   if (!usuario) {
     return <Login onGoogle={continuarConGoogle} />;
+  }
+
+  // Mismo guard que el de arriba, pero para el instante entre "ya sabemos
+  // que es admin" y que router.replace("/admin") realmente navegue — sin
+  // esto se alcanzaba a ver un parpadeo del Camino de estudiante primero.
+  if (!esPreview && perfil?.es_admin) {
+    return <div className="min-h-screen bg-bg" />;
   }
 
   // Una sola vez — mientras el nombre siga en el default, todavía no lo personalizaron.
