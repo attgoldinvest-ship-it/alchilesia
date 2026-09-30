@@ -37,7 +37,7 @@ function esBloqueCripto(leccionId) {
   return unidad >= 7 && unidad <= 15;
 }
 
-export default function Practica({ leccion, userId, repaso = false, corazones = 3, onCerrar, onTerminada }) {
+export default function Practica({ leccion, userId, repaso = false, corazones = 3, corazonPerdidoEn = null, onCerrar, onTerminada }) {
   const teoria = TEORIA[leccion.id];
   // Se revuelve cada vez que se abre la lección (Practica se monta de nuevo
   // en cada intento) — así reintentar después de fallar no repite el mismo
@@ -54,12 +54,21 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
   // refrescarse desde Supabase, así que se sigue el conteo local para poder
   // frenar de inmediato al llegar a 0, sin esperar ese round-trip.
   const [corazonesLocal, setCorazonesLocal] = useState(corazones);
+  // Igual que hace la RPC ajustar_corazones en el servidor: el reloj de
+  // recarga arranca en la PRIMERA vida perdida desde el máximo, no en cada
+  // pérdida — si esta lección es la que causa esa primera pérdida (entró
+  // con 3 llenos), se marca aquí mismo para que el contador ya tenga de
+  // dónde partir sin esperar a refrescar el perfil completo.
+  const [corazonPerdidoEnLocal, setCorazonPerdidoEnLocal] = useState(corazonPerdidoEn);
   const [sinCorazones, setSinCorazones] = useState(false);
 
   async function continuar(ok) {
     if (ok) setCorrectas((c) => c + 1);
     else if (userId && !repaso) {
       ajustarCorazones(userId, -1); // repaso: nunca pierde vidas
+      if (corazonesLocal === 3 && !corazonPerdidoEnLocal) {
+        setCorazonPerdidoEnLocal(new Date().toISOString());
+      }
       const restantes = corazonesLocal - 1;
       setCorazonesLocal(restantes);
       if (restantes <= 0) {
@@ -160,7 +169,7 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
         {guardando && <p className="text-center text-muted text-sm mt-4">Guardando…</p>}
       </div>
 
-      {sinCorazones && <SinCorazones onCerrar={onCerrar} />}
+      {sinCorazones && <SinCorazones corazonPerdidoEn={corazonPerdidoEnLocal} onCerrar={onCerrar} />}
     </div>
   );
 }

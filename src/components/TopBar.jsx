@@ -17,7 +17,7 @@ export default function TopBar({ racha = 0, gemas = 0, vidas = 0 }) {
         </div>
         <div className="flex items-center gap-2">
           <Capsula icon={<Gem size={14} className="text-[#4CC9F0]" />} valor={gemas} />
-          <Capsula icon={<Heart size={14} className="text-[#FF3B5C]" fill="currentColor" />} valor={vidas} />
+          <Corazones vidas={vidas} />
         </div>
       </div>
     </header>
@@ -29,6 +29,32 @@ function Capsula({ icon, valor }) {
     <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface border border-border">
       {icon}
       <span className="text-xs font-bold tabular-nums">{valor}</span>
+    </div>
+  );
+}
+
+// Corazones individuales (máx. 3) en vez de un número — se ve de un vistazo
+// cuántos quedan, y cuando quedan pocos (1 o 0) el borde y los corazones
+// llenos pulsan: la misma urgencia de "se están acabando" que usa Duolingo.
+function Corazones({ vidas }) {
+  const bajo = vidas <= 1;
+  return (
+    <div
+      className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-surface border transition-colors ${
+        bajo ? "border-[#FF3B5C]/50" : "border-border"
+      }`}
+    >
+      {[0, 1, 2].map((i) => {
+        const lleno = i < vidas;
+        return (
+          <Heart
+            key={i}
+            size={13}
+            className={`${lleno ? "text-[#FF3B5C]" : "text-[#3A3A3E]"} ${lleno && bajo ? "pulso-urgente" : ""}`}
+            fill={lleno ? "currentColor" : "none"}
+          />
+        );
+      })}
     </div>
   );
 }

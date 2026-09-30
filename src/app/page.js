@@ -260,13 +260,14 @@ export default function Home() {
           userId={usuario?.id}
           repaso={modoRepaso}
           corazones={perfil?.corazones ?? 3}
+          corazonPerdidoEn={perfil?.corazon_perdido_en}
           onCerrar={() => setLeccionAbierta(null)}
           onTerminada={terminarLeccion}
         />
       )}
 
       {mostrarSinCorazones && !leccionAbierta && (
-        <SinCorazones onCerrar={() => setMostrarSinCorazones(false)} />
+        <SinCorazones corazonPerdidoEn={perfil?.corazon_perdido_en} onCerrar={() => setMostrarSinCorazones(false)} />
       )}
 
       {onboardingOn && <Onboarding onTerminar={cerrarOnboarding} />}
