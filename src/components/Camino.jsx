@@ -1,4 +1,5 @@
 "use client";
+import { memo, useMemo } from "react";
 
 // Un solo camino continuo para TODO el curso — sin tarjetas separando
 // unidades (el usuario lo pidió explícito: "se ven separadas las cards,
@@ -50,9 +51,17 @@ function curva(puntos) {
 }
 
 export default function Camino({ unidades, estadoDe, onSeleccionar, anchoBox = 400 }) {
-  const { items, alto } = construirItems(unidades);
-  const nodos = items.filter((i) => i.tipo === "nodo");
-  const puntosPx = nodos.map((n) => ({ x: (n.left / 100) * anchoBox, y: n.top }));
+  // unidades es un import estático de temario.js — nunca cambia entre
+  // renders, así que esto se calcula UNA sola vez en vez de en cada
+  // render del padre (ej. cada 30s por el sondeo de corazones, o cada
+  // vez que se toca cualquier otra parte de la app). Antes recalculaba
+  // las posiciones de los 84 nodos siempre, aunque nada hubiera cambiado.
+  const { items, alto } = useMemo(() => construirItems(unidades), [unidades]);
+  const nodos = useMemo(() => items.filter((i) => i.tipo === "nodo"), [items]);
+  const puntosPx = useMemo(
+    () => nodos.map((n) => ({ x: (n.left / 100) * anchoBox, y: n.top })),
+    [nodos, anchoBox]
+  );
 
   let ultimaHechaIdx = -1;
   nodos.forEach((n, i) => {
@@ -94,7 +103,8 @@ export default function Camino({ unidades, estadoDe, onSeleccionar, anchoBox = 4
             <Nodo
               numero={it.numero}
               estado={estadoDe(it.leccion)}
-              onClick={() => onSeleccionar(it.leccion)}
+              leccion={it.leccion}
+              onSeleccionar={onSeleccionar}
             />
           </div>
         )
@@ -103,11 +113,18 @@ export default function Camino({ unidades, estadoDe, onSeleccionar, anchoBox = 4
   );
 }
 
-function Nodo({ estado, numero, onClick }) {
+// memo() — sin esto, los 84 nodos se volvían a renderizar completos cada
+// vez que el padre lo hacía (ej. cada 30s por el sondeo de corazones),
+// aunque su propio estado/número no hubiera cambiado en absoluto. Ahora
+// React se salta el re-render de un nodo si sus props son las mismas —
+// requiere que `leccion` y `onSeleccionar` tengan identidad estable entre
+// renders (vienen de un import estático y de useCallback en page.js).
+const Nodo = memo(function Nodo({ estado, numero, leccion, onSeleccionar }) {
   // Siempre muestra el número — decisión ya validada con el usuario en el
   // prototipo HTML ("solo números", extendido a todos los estados incluido
   // el bloqueado). El estado se comunica por color/borde, no por ícono.
   const deshabilitado = estado === "locked";
+  const onClick = () => onSeleccionar(leccion);
   const base = "w-14 h-14 rounded-full flex items-center justify-center text-lg font-bold border-2 shadow-[0_8px_24px_rgba(0,0,0,0.5)] transition-transform hover:scale-105 tabular-nums";
   const porEstado = {
     done: "bg-accent border-accent text-black",
@@ -127,4 +144,4 @@ function Nodo({ estado, numero, onClick }) {
       </div>
     </button>
   );
-}
+});

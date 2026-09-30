@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import TopBar from "@/components/TopBar";
 import BottomNav from "@/components/BottomNav";
@@ -14,6 +14,7 @@ import Login from "@/components/Login";
 import NombreUsuario from "@/components/NombreUsuario";
 import InstalarApp from "@/components/InstalarApp";
 import SinCorazones from "@/components/SinCorazones";
+import Cargando from "@/components/Cargando";
 import { UNIDADES, TODAS, LECCIONES_CON_CONTENIDO, BLOQUES } from "@/data/temario";
 import { useSesion } from "@/lib/useSesion";
 import { cargarProgreso, cargarPerfil, regenerarCorazones } from "@/lib/progreso";
@@ -123,18 +124,26 @@ export default function Home() {
 
   const bloqueActual = BLOQUES[siguienteGlobal?.unidad?.bloque ?? 1];
 
-  function estadoDe(leccion) {
-    if (completadas.has(leccion.id)) return "done";
-    if (!LECCIONES_CON_CONTENIDO.has(leccion.id)) return "locked";
-    if (siguienteGlobal && siguienteGlobal.id === leccion.id) return "active";
-    // Desbloqueo secuencial real: solo la lección siguiente a tu progreso
-    // está disponible — el resto queda bloqueada hasta llegar a ella
-    // (antes cualquier lección con contenido ya era clicable de una vez,
-    // sin importar el progreso; bug real, corregido).
-    return "locked";
-  }
+  // useCallback con identidad estable — sin esto, Camino.jsx recibía una
+  // función "nueva" en cada render del padre (ej. cada 30s por el sondeo
+  // de corazones) y no había forma de saltarse el re-render de los 84
+  // nodos aunque nada visible hubiera cambiado en ellos. Parte del arreglo
+  // de los "lags" periódicos reportados.
+  const estadoDe = useCallback(
+    (leccion) => {
+      if (completadas.has(leccion.id)) return "done";
+      if (!LECCIONES_CON_CONTENIDO.has(leccion.id)) return "locked";
+      if (siguienteGlobal && siguienteGlobal.id === leccion.id) return "active";
+      // Desbloqueo secuencial real: solo la lección siguiente a tu progreso
+      // está disponible — el resto queda bloqueada hasta llegar a ella
+      // (antes cualquier lección con contenido ya era clicable de una vez,
+      // sin importar el progreso; bug real, corregido).
+      return "locked";
+    },
+    [completadas, siguienteGlobal]
+  );
 
-  function seleccionar(leccion) {
+  const seleccionar = useCallback((leccion) => {
     // El botón ya viene deshabilitado si está "locked" (Camino.jsx), pero
     // esto lo blinda también a nivel de datos, no solo de UI.
     if (estadoDe(leccion) === "locked") return;
@@ -148,7 +157,7 @@ export default function Home() {
     }
     setModoRepaso(esRepaso);
     setLeccionAbierta(leccion);
-  }
+  }, [estadoDe, completadas, esPreview, perfil]);
 
   // Aplica de inmediato el conteo de corazones que Practica.jsx YA conoce
   // (se actualizó en vivo con cada respuesta) — así el header cambia en el
@@ -204,7 +213,7 @@ export default function Home() {
   // parpadeo real de la interfaz equivocada antes de mostrar el login. Bug
   // corregido: pantalla de espera propia mientras se decide.
   if (cargando && !esPreview) {
-    return <div className="min-h-screen bg-bg" />;
+    return <Cargando texto="Conectando…" />;
   }
 
   if (!usuario) {
@@ -215,7 +224,7 @@ export default function Home() {
   // que es admin" y que router.replace("/admin") realmente navegue — sin
   // esto se alcanzaba a ver un parpadeo del Camino de estudiante primero.
   if (!esPreview && perfil?.es_admin) {
-    return <div className="min-h-screen bg-bg" />;
+    return <Cargando texto="Abriendo panel admin…" />;
   }
 
   // Una sola vez — mientras el nombre siga en el default, todavía no lo personalizaron.

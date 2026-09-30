@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSesion } from "@/lib/useSesion";
 import { cargarPerfil } from "@/lib/progreso";
 import { cargarTodosLosUsuarios } from "@/lib/admin";
+import Cargando from "@/components/Cargando";
 
 function diasInactivo(ultimaActividad) {
   if (!ultimaActividad) return null; // nunca completó una lección
@@ -57,7 +58,7 @@ export default function AdminPage() {
   }, [usuarios]);
 
   if (!esPreview && (cargando || (usuario && perfil === null))) {
-    return <div className="min-h-screen bg-bg flex items-center justify-center text-muted text-sm">Cargando…</div>;
+    return <Cargando texto="Cargando…" />;
   }
 
   if (!esPreview && (!usuario || !perfil?.es_admin)) {
