@@ -116,11 +116,17 @@ export default function Home() {
     if (completadas.has(leccion.id)) return "done";
     if (!LECCIONES_CON_CONTENIDO.has(leccion.id)) return "locked";
     if (siguienteGlobal && siguienteGlobal.id === leccion.id) return "active";
-    return "default";
+    // Desbloqueo secuencial real: solo la lección siguiente a tu progreso
+    // está disponible — el resto queda bloqueada hasta llegar a ella
+    // (antes cualquier lección con contenido ya era clicable de una vez,
+    // sin importar el progreso; bug real, corregido).
+    return "locked";
   }
 
   function seleccionar(leccion) {
-    if (!LECCIONES_CON_CONTENIDO.has(leccion.id)) return;
+    // El botón ya viene deshabilitado si está "locked" (Camino.jsx), pero
+    // esto lo blinda también a nivel de datos, no solo de UI.
+    if (estadoDe(leccion) === "locked") return;
     // Repasar una lección ya completada no cuesta corazones ni vuelve a sumar XP.
     setModoRepaso(completadas.has(leccion.id));
     setLeccionAbierta(leccion);
