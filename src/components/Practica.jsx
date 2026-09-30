@@ -100,11 +100,19 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
   const total = preguntas.length;
   const pct = total ? Math.round((Math.min(idx, total) / total) * 100) : 0;
 
+  // Manda el conteo real que YA conocemos aquí (se actualizó al instante en
+  // cada respuesta) para que el header se actualice de inmediato al cerrar,
+  // sin esperar un round-trip a Supabase — antes se veía el número viejo un
+  // instante hasta que esa segunda consulta regresaba.
+  function cerrar() {
+    onCerrar({ corazones: corazonesLocal, corazonPerdidoEn: corazonPerdidoEnLocal });
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-bg flex flex-col">
       <div className="px-4 border-b border-border shrink-0" style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
         <div className="h-14 max-w-[480px] mx-auto flex items-center gap-3">
-          <button onClick={onCerrar} className="text-muted text-xl leading-none px-1">✕</button>
+          <button onClick={cerrar} className="text-muted text-xl leading-none px-1">✕</button>
           {fase === "practica" && (
             <div className="flex-1 h-2 rounded-full bg-surface overflow-hidden">
               <div className="h-full bg-accent transition-all" style={{ width: `${pct}%` }} />
@@ -179,7 +187,7 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
                 </p>
               )}
               <button
-                onClick={() => onTerminada({ correctas, total })}
+                onClick={() => onTerminada({ correctas, total, corazones: corazonesLocal, corazonPerdidoEn: corazonPerdidoEnLocal })}
                 className={`w-full py-3.5 rounded-chip font-bold mt-4 ${
                   completo ? "bg-accent text-black" : "bg-surface border-2 border-[#FF3B5C]/40 text-[#FF3B5C]"
                 }`}
@@ -193,7 +201,7 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
         {guardando && <p className="text-center text-muted text-sm mt-4">Guardando…</p>}
       </div>
 
-      {sinCorazones && <SinCorazones corazonPerdidoEn={corazonPerdidoEnLocal} onCerrar={onCerrar} />}
+      {sinCorazones && <SinCorazones corazonPerdidoEn={corazonPerdidoEnLocal} onCerrar={cerrar} />}
     </div>
   );
 }

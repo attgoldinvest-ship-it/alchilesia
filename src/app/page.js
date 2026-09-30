@@ -141,19 +141,28 @@ export default function Home() {
     setLeccionAbierta(leccion);
   }
 
-  // Cerrar a medias (la ✕, o "Entendido" del modal de sin corazones) SÍ
-  // pudo haber costado un corazón real, aunque la lección no se completó
-  // — sin este refresh, el perfil se quedaba con el conteo de ANTES de
-  // entrar, mostrando un corazón "fantasma" en el header y dejando abrir
-  // otra lección nueva aunque ya no quedaran corazones de verdad.
-  async function cerrarLeccion() {
-    setLeccionAbierta(null);
-    if (esPreview || !usuario) return;
-    cargarPerfil(usuario.id).then(setPerfil);
+  // Aplica de inmediato el conteo de corazones que Practica.jsx YA conoce
+  // (se actualizó en vivo con cada respuesta) — así el header cambia en el
+  // mismo instante en que cierras, sin esperar el round-trip a Supabase que
+  // antes dejaba ver el número viejo un momento (o hasta el siguiente poll
+  // de 30s si no se volvía a tocar nada).
+  function aplicarCorazonesOptimista(datos) {
+    if (!datos) return;
+    setPerfil((p) => (p ? { ...p, corazones: datos.corazones, corazon_perdido_en: datos.corazonPerdidoEn } : p));
   }
 
-  async function terminarLeccion() {
+  // Cerrar a medias (la ✕, o "Entendido" del modal de sin corazones) SÍ
+  // pudo haber costado un corazón real, aunque la lección no se completó.
+  async function cerrarLeccion(datos) {
+    aplicarCorazonesOptimista(datos);
+    setLeccionAbierta(null);
+    if (esPreview || !usuario) return;
+    cargarPerfil(usuario.id).then(setPerfil); // en segundo plano, para todo lo demás (racha, xp…)
+  }
+
+  async function terminarLeccion(datos) {
     const idTerminada = leccionAbierta?.id;
+    aplicarCorazonesOptimista(datos);
     setLeccionAbierta(null);
     if (esPreview) {
       // No toca Supabase — marca localmente para que la vista previa se sienta viva.
