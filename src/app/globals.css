@@ -41,3 +41,13 @@ body {
   0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
   100% { transform: translateY(105vh) translateX(var(--dx)) rotate(var(--rot)); opacity: 0; }
 }
+
+/* Transición de entrada suave entre pantallas completas (login ↔ app ↔
+   carga) — antes cambiaban de golpe, sin ninguna transición. */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in {
+  animation: fadeIn 0.25s ease-out both;
+}

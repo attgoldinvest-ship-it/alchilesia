@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-import { Flame, Gem, Heart, Trash2, Medal, Trophy, Lock, LogOut, Bell, Shield } from "lucide-react";
+import { Flame, Gem, Heart, Medal, Trophy, Lock, LogOut, Bell, Shield } from "lucide-react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient";
 import { activarNotificaciones, soportaPush } from "@/lib/push";
 import { urlAvatar } from "@/lib/avatares";
 
@@ -18,8 +17,7 @@ function proximoCorazonTexto(perfil) {
   return `+1 en ${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
 }
 
-export default function Perfil({ perfil, userId, onCambio, onVerCertificado, onCerrarSesion, certificadosGanados }) {
-  const [borrando, setBorrando] = useState(false);
+export default function Perfil({ perfil, userId, onVerCertificado, onCerrarSesion, certificadosGanados }) {
   const [notifEstado, setNotifEstado] = useState("idle"); // idle | pidiendo | on | off
   const proximo = proximoCorazonTexto(perfil);
 
@@ -28,15 +26,6 @@ export default function Perfil({ perfil, userId, onCambio, onVerCertificado, onC
     setNotifEstado("pidiendo");
     const r = await activarNotificaciones(userId);
     setNotifEstado(r.ok ? "on" : "off");
-  }
-
-  async function reiniciarProgreso() {
-    if (!userId || borrando) return;
-    setBorrando(true);
-    await supabase.from("progreso").delete().eq("user_id", userId);
-    await supabase.from("profiles").update({ xp: 0, racha: 0, corazones: 3 }).eq("id", userId);
-    setBorrando(false);
-    onCambio();
   }
 
   return (
@@ -115,15 +104,6 @@ export default function Perfil({ perfil, userId, onCambio, onVerCertificado, onC
           Panel admin
         </Link>
       )}
-
-      <button
-        onClick={reiniciarProgreso}
-        disabled={borrando}
-        className="flex items-center justify-center gap-2 py-3 rounded-chip border-2 border-[#FF3B5C]/40 text-[#FF3B5C] text-sm font-bold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100"
-      >
-        <Trash2 size={15} />
-        {borrando ? "Reiniciando…" : "Reiniciar progreso (demo)"}
-      </button>
     </div>
   );
 }

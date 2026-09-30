@@ -160,7 +160,16 @@ export default function Home() {
     setOnboardingOn(false);
   }
 
-  if (!cargando && !usuario) {
+  // Mientras useSesion() todavía no resuelve si hay sesión, antes NO había
+  // pantalla de espera — se caía directo a renderizar la app completa con
+  // datos vacíos (el Camino, TopBar en 0, etc.) durante ese instante, un
+  // parpadeo real de la interfaz equivocada antes de mostrar el login. Bug
+  // corregido: pantalla de espera propia mientras se decide.
+  if (cargando && !esPreview) {
+    return <div className="min-h-screen bg-bg" />;
+  }
+
+  if (!usuario) {
     return <Login onGoogle={continuarConGoogle} />;
   }
 
