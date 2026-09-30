@@ -129,7 +129,7 @@ $$;
 
 -- Regenera corazones según el tiempo transcurrido desde que se perdió el
 -- primero (1 cada `recarga_min` minutos, igual que curso-inversiones.html).
-create or replace function public.regenerar_corazones(uid uuid, recarga_min integer default 30)
+create or replace function public.regenerar_corazones(uid uuid, recarga_min integer default 5)
 returns void
 language plpgsql
 security definer

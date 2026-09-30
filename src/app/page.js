@@ -12,6 +12,7 @@ import Certificado from "@/components/Certificado";
 import Login from "@/components/Login";
 import NombreUsuario from "@/components/NombreUsuario";
 import InstalarApp from "@/components/InstalarApp";
+import SinCorazones from "@/components/SinCorazones";
 import { UNIDADES, TODAS, LECCIONES_CON_CONTENIDO, BLOQUES } from "@/data/temario";
 import { useSesion } from "@/lib/useSesion";
 import { cargarProgreso, cargarPerfil, regenerarCorazones } from "@/lib/progreso";
@@ -46,6 +47,7 @@ export default function Home() {
   const [modoRepaso, setModoRepaso] = useState(false);
   const [onboardingOn, setOnboardingOn] = useState(false);
   const [certificado, setCertificado] = useState(null); // "bloque1" | "curso" | "preview" | null
+  const [mostrarSinCorazones, setMostrarSinCorazones] = useState(false);
 
   useEffect(() => {
     registrarServiceWorker();
@@ -87,7 +89,7 @@ export default function Home() {
     if (!usuarioReal) return;
     let corazonesAntes = null;
     async function tick() {
-      await regenerarCorazones(usuarioReal.id, 30);
+      await regenerarCorazones(usuarioReal.id, 5);
       const p = await cargarPerfil(usuarioReal.id);
       setPerfil(p);
       if (p && corazonesAntes !== null && corazonesAntes < 3 && p.corazones >= 3) {
@@ -127,8 +129,15 @@ export default function Home() {
     // El botón ya viene deshabilitado si está "locked" (Camino.jsx), pero
     // esto lo blinda también a nivel de datos, no solo de UI.
     if (estadoDe(leccion) === "locked") return;
-    // Repasar una lección ya completada no cuesta corazones ni vuelve a sumar XP.
-    setModoRepaso(completadas.has(leccion.id));
+    const esRepaso = completadas.has(leccion.id);
+    // Repasar una lección ya completada no cuesta corazones ni vuelve a sumar
+    // XP, así que sigue disponible sin corazones — solo se bloquea abrir una
+    // lección NUEVA (esa sí puede costar un corazón si fallas).
+    if (!esRepaso && !esPreview && (perfil?.corazones ?? 3) <= 0) {
+      setMostrarSinCorazones(true);
+      return;
+    }
+    setModoRepaso(esRepaso);
     setLeccionAbierta(leccion);
   }
 
@@ -250,9 +259,14 @@ export default function Home() {
           leccion={leccionAbierta}
           userId={usuario?.id}
           repaso={modoRepaso}
+          corazones={perfil?.corazones ?? 3}
           onCerrar={() => setLeccionAbierta(null)}
           onTerminada={terminarLeccion}
         />
+      )}
+
+      {mostrarSinCorazones && !leccionAbierta && (
+        <SinCorazones onCerrar={() => setMostrarSinCorazones(false)} />
       )}
 
       {onboardingOn && <Onboarding onTerminar={cerrarOnboarding} />}

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { activarNotificaciones, soportaPush } from "@/lib/push";
 import { urlAvatar } from "@/lib/avatares";
 
-const RECARGA_MIN = 30;
+const RECARGA_MIN = 5;
 
 function proximoCorazonTexto(perfil) {
   if (!perfil || perfil.corazones >= 3 || !perfil.corazon_perdido_en) return null;

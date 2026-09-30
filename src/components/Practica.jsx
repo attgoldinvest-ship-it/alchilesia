@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Ejercicio from "./ejercicios/Ejercicio";
+import SinCorazones from "./SinCorazones";
 import { TEORIA, PREGUNTAS } from "@/data/contenido";
 import { guardarProgreso, sumarXp, ajustarCorazones, registrarActividad } from "@/lib/progreso";
 
@@ -36,7 +37,7 @@ function esBloqueCripto(leccionId) {
   return unidad >= 7 && unidad <= 15;
 }
 
-export default function Practica({ leccion, userId, repaso = false, onCerrar, onTerminada }) {
+export default function Practica({ leccion, userId, repaso = false, corazones = 3, onCerrar, onTerminada }) {
   const teoria = TEORIA[leccion.id];
   // Se revuelve cada vez que se abre la lección (Practica se monta de nuevo
   // en cada intento) — así reintentar después de fallar no repite el mismo
@@ -49,10 +50,23 @@ export default function Practica({ leccion, userId, repaso = false, onCerrar, on
   const [idx, setIdx] = useState(0);
   const [correctas, setCorrectas] = useState(0);
   const [guardando, setGuardando] = useState(false);
+  // Corazones en vivo durante la sesión — el perfil global tarda un poco en
+  // refrescarse desde Supabase, así que se sigue el conteo local para poder
+  // frenar de inmediato al llegar a 0, sin esperar ese round-trip.
+  const [corazonesLocal, setCorazonesLocal] = useState(corazones);
+  const [sinCorazones, setSinCorazones] = useState(false);
 
   async function continuar(ok) {
     if (ok) setCorrectas((c) => c + 1);
-    else if (userId && !repaso) ajustarCorazones(userId, -1); // repaso: nunca pierde vidas
+    else if (userId && !repaso) {
+      ajustarCorazones(userId, -1); // repaso: nunca pierde vidas
+      const restantes = corazonesLocal - 1;
+      setCorazonesLocal(restantes);
+      if (restantes <= 0) {
+        setSinCorazones(true);
+        return; // no pasa a la siguiente pregunta — hay que recargar corazones primero
+      }
+    }
 
     if (idx + 1 >= preguntas.length) {
       setGuardando(true);
@@ -145,6 +159,8 @@ export default function Practica({ leccion, userId, repaso = false, onCerrar, on
 
         {guardando && <p className="text-center text-muted text-sm mt-4">Guardando…</p>}
       </div>
+
+      {sinCorazones && <SinCorazones onCerrar={onCerrar} />}
     </div>
   );
 }

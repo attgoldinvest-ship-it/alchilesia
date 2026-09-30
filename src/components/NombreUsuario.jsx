@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { AVATARES, urlAvatar } from "@/lib/avatares";
 
 const INSTRUCCIONES = [
-  { Icono: Heart, texto: "3 corazones. Pierdes 1 por error, se recargan solos cada 30 min." },
+  { Icono: Heart, texto: "3 corazones. Pierdes 1 por error, se recargan solos cada 5 min." },
   { Icono: Gem, texto: "Ganas XP por cada lección completada — más si aciertas a la primera." },
   { Icono: Flame, texto: "Entra seguido para mantener tu racha — se rompe si dejas un día en blanco." },
 ];

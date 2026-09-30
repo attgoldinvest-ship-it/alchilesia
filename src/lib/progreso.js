@@ -38,7 +38,7 @@ export async function registrarActividad(userId) {
   if (error) console.warn("registrarActividad:", error.message);
 }
 
-export async function regenerarCorazones(userId, recargaMin = 30) {
+export async function regenerarCorazones(userId, recargaMin = 5) {
   const { error } = await supabase.rpc("regenerar_corazones", { uid: userId, recarga_min: recargaMin });
   if (error) console.warn("regenerarCorazones:", error.message);
 }
