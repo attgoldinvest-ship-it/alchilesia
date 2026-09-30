@@ -15,30 +15,44 @@ export function soportaPush() {
 export async function activarNotificaciones(userId) {
   if (!soportaPush()) return { ok: false, motivo: "no-soportado" };
 
-  const permiso = await Notification.requestPermission();
-  if (permiso !== "granted") return { ok: false, motivo: "rechazado" };
+  try {
+    const permiso = await Notification.requestPermission();
+    if (permiso !== "granted") return { ok: false, motivo: "rechazado" };
 
-  const registro = await navigator.serviceWorker.ready;
-  let sub = await registro.pushManager.getSubscription();
-  if (!sub) {
-    sub = await registro.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY),
-    });
+    // Antes se usaba navigator.serviceWorker.ready, que se queda colgado
+    // para siempre si el SW todavía no se registró en este primer load —
+    // register() de nuevo es idempotente (no vuelve a instalar si ya
+    // existe) y sí resuelve, en vez de quedarse esperando sin fin.
+    const registro = await navigator.serviceWorker.register("/sw.js");
+    await navigator.serviceWorker.ready;
+
+    let sub = await registro.pushManager.getSubscription();
+    if (!sub) {
+      sub = await registro.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY),
+      });
+    }
+
+    const json = sub.toJSON();
+    const { error } = await supabase.from("push_subscriptions").upsert(
+      {
+        user_id: userId,
+        endpoint: json.endpoint,
+        p256dh: json.keys.p256dh,
+        auth: json.keys.auth,
+      },
+      { onConflict: "endpoint" }
+    );
+    if (error) return { ok: false, motivo: error.message };
+    return { ok: true };
+  } catch (e) {
+    // Antes esto no se capturaba en ningún lado — si subscribe() lanzaba
+    // (SW no listo, llave inválida, cuota del navegador, etc.), el botón
+    // se quedaba trabado en "Pidiendo permiso…" para siempre, sin mostrar
+    // ningún error real. Ahora se propaga el mensaje real a la UI.
+    return { ok: false, motivo: e?.message || String(e) };
   }
-
-  const json = sub.toJSON();
-  const { error } = await supabase.from("push_subscriptions").upsert(
-    {
-      user_id: userId,
-      endpoint: json.endpoint,
-      p256dh: json.keys.p256dh,
-      auth: json.keys.auth,
-    },
-    { onConflict: "endpoint" }
-  );
-  if (error) console.warn("activarNotificaciones:", error.message);
-  return { ok: !error };
 }
 
 export async function enviarPush(userId, { title, body, url }) {

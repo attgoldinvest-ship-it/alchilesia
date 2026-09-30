@@ -19,13 +19,16 @@ function proximoCorazonTexto(perfil) {
 
 export default function Perfil({ perfil, userId, onVerCertificado, onCerrarSesion, certificadosGanados }) {
   const [notifEstado, setNotifEstado] = useState("idle"); // idle | pidiendo | on | off
+  const [notifError, setNotifError] = useState("");
   const proximo = proximoCorazonTexto(perfil);
 
   async function activarNotifs() {
     if (!userId || notifEstado === "pidiendo") return;
     setNotifEstado("pidiendo");
+    setNotifError("");
     const r = await activarNotificaciones(userId);
     setNotifEstado(r.ok ? "on" : "off");
+    if (!r.ok) setNotifError(r.motivo || "");
   }
 
   return (
@@ -51,14 +54,25 @@ export default function Perfil({ perfil, userId, onVerCertificado, onCerrarSesio
       </button>
 
       {soportaPush() && notifEstado !== "on" && (
-        <button
-          onClick={activarNotifs}
-          disabled={notifEstado === "pidiendo"}
-          className="flex items-center justify-center gap-2 py-3 rounded-chip bg-accent text-black text-sm font-bold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100"
-        >
-          <Bell size={15} />
-          {notifEstado === "pidiendo" ? "Pidiendo permiso…" : notifEstado === "off" ? "No se activaron — reintentar" : "Activar notificaciones"}
-        </button>
+        <div className="flex flex-col gap-1.5">
+          <button
+            onClick={activarNotifs}
+            disabled={notifEstado === "pidiendo"}
+            className="flex items-center justify-center gap-2 py-3 rounded-chip bg-accent text-black text-sm font-bold transition-transform active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100"
+          >
+            <Bell size={15} />
+            {notifEstado === "pidiendo" ? "Pidiendo permiso…" : notifEstado === "off" ? "No se activaron — reintentar" : "Activar notificaciones"}
+          </button>
+          {notifEstado === "off" && notifError && (
+            <p className="text-[11px] text-[#FF3B5C] text-center px-2">
+              {notifError === "rechazado"
+                ? "Bloqueaste el permiso de notificaciones — actívalo desde los ajustes del navegador para este sitio."
+                : notifError === "no-soportado"
+                ? "Este navegador no soporta notificaciones push."
+                : `Error: ${notifError}`}
+            </p>
+          )}
+        </div>
       )}
       {notifEstado === "on" && (
         <div className="flex items-center justify-center gap-2 py-3 rounded-chip bg-surface border border-border text-[#4ADE80] text-sm font-bold">
