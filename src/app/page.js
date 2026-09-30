@@ -141,6 +141,17 @@ export default function Home() {
     setLeccionAbierta(leccion);
   }
 
+  // Cerrar a medias (la ✕, o "Entendido" del modal de sin corazones) SÍ
+  // pudo haber costado un corazón real, aunque la lección no se completó
+  // — sin este refresh, el perfil se quedaba con el conteo de ANTES de
+  // entrar, mostrando un corazón "fantasma" en el header y dejando abrir
+  // otra lección nueva aunque ya no quedaran corazones de verdad.
+  async function cerrarLeccion() {
+    setLeccionAbierta(null);
+    if (esPreview || !usuario) return;
+    cargarPerfil(usuario.id).then(setPerfil);
+  }
+
   async function terminarLeccion() {
     const idTerminada = leccionAbierta?.id;
     setLeccionAbierta(null);
@@ -261,7 +272,7 @@ export default function Home() {
           repaso={modoRepaso}
           corazones={perfil?.corazones ?? 3}
           corazonPerdidoEn={perfil?.corazon_perdido_en}
-          onCerrar={() => setLeccionAbierta(null)}
+          onCerrar={cerrarLeccion}
           onTerminada={terminarLeccion}
         />
       )}

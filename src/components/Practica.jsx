@@ -83,8 +83,12 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
       const finalCorrectas = ok ? correctas + 1 : correctas;
       if (userId && !repaso) {
         await guardarProgreso(userId, leccion.id, { correctas: finalCorrectas, total });
-        await sumarXp(userId, 10 + (finalCorrectas === total ? 5 : 0));
-        await registrarActividad(userId);
+        // XP y racha solo si quedó de verdad completada (todas correctas) —
+        // igual que el nodo, no se premia un intento que no avanza.
+        if (finalCorrectas === total) {
+          await sumarXp(userId, 15);
+          await registrarActividad(userId);
+        }
       }
       setGuardando(false);
       setFase("resultado");
@@ -147,24 +151,44 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
           <Ejercicio key={idx} pregunta={preguntas[idx]} onContinuar={continuar} />
         )}
 
-        {fase === "resultado" && (
-          <div className="flex flex-col items-center text-center gap-4 pt-16">
-            <div className="w-20 h-20 rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-3xl">
-              {correctas === total ? "🏆" : "✓"}
+        {fase === "resultado" && (() => {
+          const perfecto = correctas === total;
+          // Solo cuenta como "completada" (avanza el camino) si acertaste
+          // TODAS — repaso siempre se ve neutral porque ya estaba completada
+          // de antes y no depende de este intento.
+          const completo = repaso || perfecto;
+          return (
+            <div className="flex flex-col items-center text-center gap-4 pt-16">
+              <div
+                className={`w-20 h-20 rounded-full border-2 flex items-center justify-center text-3xl ${
+                  completo ? "bg-accent/15 border-accent" : "bg-[#FF3B5C]/10 border-[#FF3B5C]/50"
+                }`}
+              >
+                {perfecto ? "🏆" : repaso ? "✓" : "↻"}
+              </div>
+              <h1 className="text-[24px] font-[800]">
+                {repaso ? "Repaso completado" : perfecto ? "¡Lección completada!" : "Casi — inténtalo de nuevo"}
+              </h1>
+              <p className="text-muted text-[15px]">
+                {correctas} de {total} correctas
+                {!repaso && perfecto && ` · +${15} XP`}
+              </p>
+              {!repaso && !perfecto && (
+                <p className="text-[13px] text-muted max-w-[280px] leading-relaxed -mt-1">
+                  Necesitas acertar todas para completar el nodo y avanzar — vuelve a intentarlo, las preguntas salen en otro orden.
+                </p>
+              )}
+              <button
+                onClick={() => onTerminada({ correctas, total })}
+                className={`w-full py-3.5 rounded-chip font-bold mt-4 ${
+                  completo ? "bg-accent text-black" : "bg-surface border-2 border-[#FF3B5C]/40 text-[#FF3B5C]"
+                }`}
+              >
+                {completo ? "Continuar" : "Reintentar"}
+              </button>
             </div>
-            <h1 className="text-[24px] font-[800]">¡Lección completada!</h1>
-            <p className="text-muted text-[15px]">
-              {correctas} de {total} correctas
-              {!repaso && ` · +${10 + (correctas === total ? 5 : 0)} XP`}
-            </p>
-            <button
-              onClick={() => onTerminada({ correctas, total })}
-              className="w-full py-3.5 rounded-chip bg-accent text-black font-bold mt-4"
-            >
-              Continuar
-            </button>
-          </div>
-        )}
+          );
+        })()}
 
         {guardando && <p className="text-center text-muted text-sm mt-4">Guardando…</p>}
       </div>

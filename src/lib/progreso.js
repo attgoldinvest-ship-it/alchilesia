@@ -8,10 +8,13 @@ export async function cargarProgreso(userId) {
   return new Map(data.map((f) => [f.leccion_id, f]));
 }
 
-// Marca una lección como completada (o repasada) con su resultado.
+// Guarda el resultado de un intento. Solo cuenta como "completada" (y por
+// lo tanto desbloquea el siguiente nodo) si acertó TODAS las preguntas —
+// si falló aunque sea una, el nodo se queda disponible para reintentar,
+// no avanza el camino.
 export async function guardarProgreso(userId, leccionId, { correctas, total }) {
   const { error } = await supabase.from("progreso").upsert(
-    { user_id: userId, leccion_id: leccionId, completada: true, correctas, total, updated_at: new Date().toISOString() },
+    { user_id: userId, leccion_id: leccionId, completada: correctas === total, correctas, total, updated_at: new Date().toISOString() },
     { onConflict: "user_id,leccion_id" }
   );
   if (error) console.warn("guardarProgreso:", error.message);
