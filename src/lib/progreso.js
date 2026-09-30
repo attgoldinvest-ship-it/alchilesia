@@ -31,9 +31,14 @@ export async function sumarXp(userId, xp) {
   if (error) console.warn("sumarXp:", error.message);
 }
 
+// Devuelve el valor REAL que confirma el servidor tras el ajuste — nunca
+// hay que restar por nuestra cuenta en el cliente, porque el punto de
+// partida (el `perfil` que ya teníamos en pantalla) puede estar
+// desactualizado y desincronizar el bloqueo de "sin corazones".
 export async function ajustarCorazones(userId, delta) {
-  const { error } = await supabase.rpc("ajustar_corazones", { uid: userId, delta });
-  if (error) console.warn("ajustarCorazones:", error.message);
+  const { data, error } = await supabase.rpc("ajustar_corazones", { uid: userId, delta });
+  if (error) { console.warn("ajustarCorazones:", error.message); return null; }
+  return data?.[0] ?? null; // { corazones, corazon_perdido_en }
 }
 
 export async function registrarActividad(userId) {

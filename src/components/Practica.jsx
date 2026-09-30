@@ -65,12 +65,14 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
   async function continuar(ok) {
     if (ok) setCorrectas((c) => c + 1);
     else if (userId && !repaso) {
-      ajustarCorazones(userId, -1); // repaso: nunca pierde vidas
-      if (corazonesLocal === 3 && !corazonPerdidoEnLocal) {
-        setCorazonPerdidoEnLocal(new Date().toISOString());
-      }
-      const restantes = corazonesLocal - 1;
+      // Se espera la confirmación real del servidor antes de decidir si
+      // bloquea — restar por nuestra cuenta desde un `corazones` que pudo
+      // llegar desactualizado es justo lo que dejaba "seguir jugando" con
+      // 0 corazones de verdad en el servidor.
+      const real = await ajustarCorazones(userId, -1); // repaso: nunca pierde vidas
+      const restantes = real ? real.corazones : Math.max(0, corazonesLocal - 1);
       setCorazonesLocal(restantes);
+      if (real?.corazon_perdido_en) setCorazonPerdidoEnLocal(real.corazon_perdido_en);
       if (restantes <= 0) {
         setSinCorazones(true);
         return; // no pasa a la siguiente pregunta — hay que recargar corazones primero

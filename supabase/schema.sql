@@ -99,8 +99,21 @@ begin
 end;
 $$;
 
+-- Postgres no permite cambiar el tipo de retorno con CREATE OR REPLACE
+-- (antes era "returns void") — hay que borrarla primero.
+drop function if exists public.ajustar_corazones(uuid, integer);
+
+-- Devuelve el corazones/corazon_perdido_en REALES ya actualizados —
+-- antes no devolvía nada (returns void) y el cliente solo restaba 1 de su
+-- propio conteo local, que arranca del `perfil` que ya tenía en pantalla.
+-- Si ese valor estaba desactualizado (ej. perdiste un corazón en la
+-- lección anterior y el conteo local de esta lección arrancó de un número
+-- más alto), el bloqueo por "sin corazones" se activaba tarde — el
+-- servidor ya te había puesto en 0, pero el navegador seguía creyendo que
+-- tenías más. Ahora el cliente usa SIEMPRE el valor que confirma este
+-- RPC, nunca su propia resta, así no hay forma de desincronizarse.
 create or replace function public.ajustar_corazones(uid uuid, delta integer)
-returns void
+returns table (corazones integer, corazon_perdido_en timestamptz)
 language plpgsql
 security definer
 set search_path = public
@@ -112,18 +125,20 @@ begin
   if uid <> auth.uid() then
     raise exception 'No autorizado';
   end if;
-  select corazones into actual from public.profiles where id = uid;
+  select p.corazones into actual from public.profiles p where p.id = uid;
   nuevo := greatest(0, least(3, actual + delta));
-  update public.profiles
+  update public.profiles p
   set corazones = nuevo,
       -- el reloj de recarga arranca solo en la PRIMERA vida perdida desde
       -- el máximo (no se reinicia con cada error, igual que en el prototipo HTML)
       corazon_perdido_en = case
         when nuevo >= 3 then null
         when delta < 0 and actual >= 3 then now()
-        else corazon_perdido_en
+        else p.corazon_perdido_en
       end
-  where id = uid;
+  where p.id = uid;
+
+  return query select p.corazones, p.corazon_perdido_en from public.profiles p where p.id = uid;
 end;
 $$;
 
@@ -219,6 +234,16 @@ create policy "push_subscriptions_insert_own" on public.push_subscriptions for i
 
 drop policy if exists "push_subscriptions_delete_own" on public.push_subscriptions;
 create policy "push_subscriptions_delete_own" on public.push_subscriptions for delete using (auth.uid() = user_id);
+
+-- Faltaba esta — sin ella, el upsert de activarNotificaciones() fallaba
+-- con "violates row-level security policy" cada vez que el navegador ya
+-- tenía una suscripción con el mismo endpoint (mismo dispositivo/perfil
+-- de Chrome) de un intento anterior: el upsert se convierte en UPDATE
+-- por el conflicto de "endpoint" único, y sin policy de update, Postgres
+-- lo bloquea por completo. Bug real, confirmado con el error tal cual en
+-- pantalla.
+drop policy if exists "push_subscriptions_update_own" on public.push_subscriptions;
+create policy "push_subscriptions_update_own" on public.push_subscriptions for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
 -- 4) Panel admin — candado: nadie puede autootorgarse es_admin desde el
 -- navegador (la policy "profiles_update_own" permite editar tu propia fila,
