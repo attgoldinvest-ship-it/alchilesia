@@ -13,8 +13,12 @@ const TABS = [
 
 export default function BottomNav({ activa, onCambiar }) {
   return (
+    // Ya NO es "fixed" — vive como último hijo del contenedor flex de
+    // page.js (shrink-0), siempre visible sin depender del viewport real
+    // de iOS Safari (ver el comentario en page.js sobre el bug de la
+    // barra de herramientas dinámica).
     <nav
-      className="px-2 border-t border-border bg-bg/90 backdrop-blur-xl fixed bottom-0 left-0 right-0 z-30"
+      className="shrink-0 px-2 border-t border-border bg-bg/90 backdrop-blur-xl z-30"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <div className="h-16 max-w-[480px] mx-auto flex items-center justify-around">

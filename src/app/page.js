@@ -222,10 +222,14 @@ export default function Home() {
   const necesitaNombre = usuario && perfil && perfil.nombre === "Estudiante";
 
   return (
-    <div
-      className="relative min-h-screen bg-bg text-white"
-      style={{ paddingBottom: "calc(96px + env(safe-area-inset-bottom, 0px))" }}
-    >
+    // h-dvh + flex column, en vez de min-h-screen con el BottomNav en
+    // "fixed" — en iOS Safari, la barra de herramientas dinámica hace que
+    // los elementos fixed se desincronicen del viewport real durante el
+    // scroll en páginas largas (bug real reportado: el menú aparecía a la
+    // mitad del Camino al bajar). Con este contenedor de altura fija y
+    // solo <main> con scroll interno, el menú nunca depende de "fixed" —
+    // vive en el flujo normal, siempre visible, sin ese bug de iOS.
+    <div className="relative h-dvh flex flex-col bg-bg text-white overflow-hidden">
       {/* Halo decorativo — solo se nota en pantallas anchas, evita que se
           sienta vacío alrededor de la columna centrada en desktop/tablet. */}
       <div
@@ -236,13 +240,13 @@ export default function Home() {
         }}
       />
       {esPreview && (
-        <div className="bg-accent text-black text-[11px] font-bold text-center py-1 tracking-wide">
+        <div className="shrink-0 bg-accent text-black text-[11px] font-bold text-center py-1 tracking-wide">
           VISTA PREVIA — datos de ejemplo, no se guarda nada
         </div>
       )}
       <TopBar racha={perfil?.racha ?? 0} gemas={perfil?.xp ?? 0} vidas={perfil?.corazones ?? 3} />
 
-      <main className="max-w-[480px] mx-auto px-5 pt-7">
+      <main className="flex-1 min-h-0 overflow-y-auto max-w-[480px] mx-auto px-5 pt-7 w-full">
         {tab === "aprender" && (
           <>
             <div className="flex items-end justify-between px-1 mb-1.5">
