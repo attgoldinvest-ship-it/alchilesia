@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Mail, Heart, Flame, Gem, Check, ArrowLeft, Shuffle } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { AVATARES, urlAvatar } from "@/lib/avatares";
+import Mascota from "./Mascota";
 
 const INSTRUCCIONES = [
   { Icono: Heart, color: "#FF3B5C", texto: "3 corazones. Pierdes 1 por error, se recargan solos cada 5 min." },
@@ -93,6 +94,7 @@ export default function NombreUsuario({ userId, email, sugerido, onGuardado }) {
       <div className="flex-1 flex flex-col items-center justify-center gap-8 text-center fade-in" key={paso}>
         {paso === 0 && (
           <>
+            <Mascota mood="hablando" size={88} />
             <div>
               <h1 className="text-[26px] font-[800] tracking-[-0.03em]">¡Bienvenido!</h1>
               <p className="text-[13px] text-muted mt-2 max-w-[280px] mx-auto leading-relaxed">

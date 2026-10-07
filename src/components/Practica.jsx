@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Ejercicio from "./ejercicios/Ejercicio";
 import SinCorazones from "./SinCorazones";
+import Mascota from "./Mascota";
 import { TEORIA, PREGUNTAS } from "@/data/contenido";
 import { guardarProgreso, sumarXp, ajustarCorazones, registrarActividad } from "@/lib/progreso";
 
@@ -169,13 +170,17 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
           const completo = repaso || perfecto;
           return (
             <div className="flex flex-col items-center text-center gap-4 pt-16">
-              <div
-                className={`w-20 h-20 rounded-full border-2 flex items-center justify-center text-3xl ${
-                  completo ? "bg-accent/15 border-accent" : "bg-[#FF3B5C]/10 border-[#FF3B5C]/50"
-                }`}
-              >
-                {perfecto ? "🏆" : repaso ? "✓" : "↻"}
-              </div>
+              {perfecto && !repaso ? (
+                <Mascota mood="feliz" size={100} />
+              ) : (
+                <div
+                  className={`w-20 h-20 rounded-full border-2 flex items-center justify-center text-3xl ${
+                    completo ? "bg-accent/15 border-accent" : "bg-[#FF3B5C]/10 border-[#FF3B5C]/50"
+                  }`}
+                >
+                  {perfecto ? "🏆" : repaso ? "✓" : "↻"}
+                </div>
+              )}
               <h1 className="text-[24px] font-[800]">
                 {repaso ? "Repaso completado" : perfecto ? "¡Lección completada!" : "Casi — inténtalo de nuevo"}
               </h1>
