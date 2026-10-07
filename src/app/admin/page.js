@@ -6,6 +6,7 @@ import { useSesion } from "@/lib/useSesion";
 import { cargarPerfil } from "@/lib/progreso";
 import { cargarTodosLosUsuarios, eliminarUsuario } from "@/lib/admin";
 import Cargando from "@/components/Cargando";
+import { urlAvatar } from "@/lib/avatares";
 
 function diasInactivo(ultimaActividad) {
   if (!ultimaActividad) return null; // nunca completó una lección
@@ -71,6 +72,9 @@ export default function AdminPage() {
       xpTotal: usuarios.reduce((a, u) => a + (u.xp || 0), 0),
       rachaProm: usuarios.length ? Math.round(usuarios.reduce((a, u) => a + (u.racha || 0), 0) / usuarios.length) : 0,
       inactivos: usuarios.filter((u) => { const d = diasInactivo(u.ultima_actividad); return d !== null && d >= 7; }).length,
+      // Cuentas que nunca terminaron la tarjeta de bienvenida (alias
+      // obligatorio) — se quedan con el nombre default "Estudiante".
+      sinCompletar: usuarios.filter((u) => u.nombre === "Estudiante").length,
     };
   }, [usuarios]);
 
@@ -109,12 +113,13 @@ export default function AdminPage() {
 
       <main className="max-w-[860px] mx-auto px-5 py-7">
         {stats && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
             <StatCard icon={<Users size={16} className="text-accent" />} valor={stats.total} label="Usuarios" />
             <StatCard icon={<Gem size={16} className="text-[#4CC9F0]" />} valor={stats.conProgreso} label="Con progreso" />
             <StatCard icon={<Gem size={16} className="text-[#4CC9F0]" />} valor={stats.xpTotal} label="XP total" />
             <StatCard icon={<Flame size={16} className="text-accent" fill="currentColor" />} valor={stats.rachaProm} label="Racha promedio" />
             <StatCard icon={<CalendarOff size={16} className="text-[#FF3B5C]" />} valor={stats.inactivos} label="Inactivos 7+d" />
+            <StatCard icon={<Users size={16} className="text-muted" />} valor={stats.sinCompletar} label="Sin completar" />
           </div>
         )}
 
@@ -158,12 +163,21 @@ export default function AdminPage() {
                   const inactivo = diasInactivo(u.ultima_actividad);
                   const confirmando = confirmandoId === u.id;
                   const borrando = borrandoId === u.id;
+                  const sinCompletar = u.nombre === "Estudiante";
                   return (
-                    <tr key={u.id} className="border-t border-border">
+                    <tr key={u.id} className={`border-t border-border ${sinCompletar ? "opacity-60" : ""}`}>
                       <td className="px-4 py-3 font-semibold whitespace-nowrap">
-                        <span className="flex items-center gap-2">
+                        <span className="flex items-center gap-2.5">
+                          <span className="w-7 h-7 rounded-full bg-accent/15 border border-border flex items-center justify-center text-[11px] font-bold text-accent overflow-hidden shrink-0">
+                            {u.avatar ? (
+                              <img src={urlAvatar(u.avatar)} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              (u.nombre || "?")[0].toUpperCase()
+                            )}
+                          </span>
                           {u.nombre}
                           {u.es_admin && <span className="text-[10px] font-bold text-accent bg-accent/10 border border-accent/30 px-1.5 py-0.5 rounded-full shrink-0">ADMIN</span>}
+                          {sinCompletar && <span className="text-[10px] font-bold text-muted bg-surface border border-border px-1.5 py-0.5 rounded-full shrink-0">SIN COMPLETAR</span>}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-muted text-[12px] whitespace-nowrap">{u.email || "—"}</td>

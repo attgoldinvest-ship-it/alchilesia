@@ -227,6 +227,16 @@ export default function Home() {
     return <Cargando texto="Abriendo panel admin…" />;
   }
 
+  // Bug real: entre que useSesion() ya confirmó la sesión (cargando=false)
+  // y que cargarPerfil() termina de traer el perfil, `perfil` sigue en
+  // null — en ese instante `necesitaNombre` evaluaba a false (null && ...)
+  // y la app completa ya se mostraba interactiva, saltándose el alias
+  // obligatorio durante esa ventana. Se cierra ese hueco esperando el
+  // perfil antes de decidir si hace falta el alias.
+  if (!esPreview && perfil === null) {
+    return <Cargando texto="Cargando tu perfil…" />;
+  }
+
   // Una sola vez — mientras el nombre siga en el default, todavía no lo personalizaron.
   const necesitaNombre = usuario && perfil && perfil.nombre === "Estudiante";
 
