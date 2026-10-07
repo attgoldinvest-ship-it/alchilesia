@@ -1,7 +1,7 @@
 export default function manifest() {
   return {
-    name: "Al Chile Sí Aprendo — Dasus",
-    short_name: "Al Chile",
+    name: "NiroAcademy — Dasus",
+    short_name: "NiroAcademy",
     description: "Inversión y cripto, explicado sin choro.",
     start_url: "/",
     display: "standalone",

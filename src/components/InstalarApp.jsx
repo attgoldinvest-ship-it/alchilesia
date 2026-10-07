@@ -60,7 +60,7 @@ export default function InstalarApp() {
           <Download size={18} className="text-accent" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-bold">Instala Al Chile Sí Aprendo</p>
+          <p className="text-[13px] font-bold">Instala NiroAcademy</p>
           {mostrarIOS ? (
             <p className="text-[11px] text-muted leading-snug">
               Toca <Share size={11} className="inline -mt-0.5" /> y luego "Agregar a pantalla de inicio"

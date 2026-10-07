@@ -8,13 +8,13 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Al Chile Sí Aprendo — Dasus",
+  title: "NiroAcademy — Dasus",
   description: "Invertir y cripto, explicado sin choro.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Al Chile Sí Aprendo",
+    title: "NiroAcademy",
   },
   icons: {
     icon: [

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Política de privacidad — Al Chile Sí Aprendo",
+  title: "Política de privacidad — NiroAcademy",
 };
 
 export default function Privacidad() {
@@ -12,7 +12,7 @@ export default function Privacidad() {
         <section>
           <h2 className="text-[18px] font-bold mb-2">1. Qué datos recopilamos</h2>
           <p>
-            Al Chile Sí Aprendo (la "app") recopila únicamente los datos necesarios para
+            NiroAcademy (la "app") recopila únicamente los datos necesarios para
             que funcione el curso: tu nombre/alias, tu correo electrónico (obtenidos de tu
             cuenta de Google al iniciar sesión), tu avatar elegido, tu progreso en las
             lecciones, tu racha, tu experiencia (XP) y tus corazones. No recopilamos datos

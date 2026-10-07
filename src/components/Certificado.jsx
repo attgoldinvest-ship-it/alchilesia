@@ -7,18 +7,18 @@ const COLORES_CONFETI = ["#FF6B2D", "#FFC24B", "#16D97C", "#7C5CFF", "#1CC6C6"];
 const DATOS = {
   bloque1: {
     titulo: "Bloque 1 — Inversión tradicional",
-    sub: '"Con Cabeza" · Al Chile Sí Aprendo',
+    sub: '"Con Cabeza" · NiroAcademy',
     desc: "por completar todas las lecciones de este bloque, demostrando dominio de riesgo, diversificación, comisiones, impuestos y cómo detectar una estafa antes de que sea tarde.",
     Icono: Medal,
   },
   curso: {
-    titulo: "Al Chile Sí Aprendo — Curso completo",
+    titulo: "NiroAcademy — Curso completo",
     sub: "Inversión tradicional + Cripto funcional · Dasus",
     desc: "por completar los Bloques 1 y 2 completos: de no saber por dónde empezar, a entender riesgo, custodia, comisiones y cómo operar con cabeza — en inversión tradicional y en cripto.",
     Icono: Trophy,
   },
   preview: {
-    titulo: "Al Chile Sí Aprendo — Curso completo",
+    titulo: "NiroAcademy — Curso completo",
     sub: "Vista previa · así se ve el certificado real",
     desc: "Este es un adelanto — se entrega de verdad al terminar el Bloque 1 (certificado parcial) y al terminar el curso completo (Bloques 1 y 2).",
     Icono: Trophy,

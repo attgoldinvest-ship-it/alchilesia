@@ -260,7 +260,7 @@ export default function Home() {
           <>
             <div className="flex items-end justify-between px-1 mb-1.5">
               <h1 className="text-[28px] font-[800] tracking-[-0.03em] leading-none">
-                Al Chile Sí Aprendo
+                NiroAcademy
               </h1>
               {!cargando && (
                 <span className="text-[11px] font-bold text-accent tabular-nums leading-none pb-0.5">

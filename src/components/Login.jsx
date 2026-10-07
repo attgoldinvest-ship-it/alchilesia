@@ -5,10 +5,10 @@
 export default function Login({ onGoogle }) {
   return (
     <div className="fixed inset-0 z-50 bg-bg flex flex-col items-center justify-center px-8 gap-8 text-center">
-      <img src="/icon-512.png" alt="Al Chile Sí Aprendo" className="w-28 h-28 object-contain" />
+      <img src="/icon-512.png" alt="NiroAcademy" className="w-28 h-28 object-contain" />
 
       <div>
-        <h1 className="text-[26px] font-[800] tracking-[-0.03em]">Al Chile Sí Aprendo</h1>
+        <h1 className="text-[26px] font-[800] tracking-[-0.03em]">NiroAcademy</h1>
         <p className="text-[13px] text-muted mt-1">Inversión y cripto, explicado sin choro — Dasus</p>
       </div>
 
