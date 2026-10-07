@@ -46,6 +46,13 @@ export default function Home() {
   const [esPreview, setEsPreview] = useState(false);
   const [progreso, setProgreso] = useState(new Map());
   const [perfil, setPerfil] = useState(null);
+  // perfil===null significa dos cosas distintas y hacía falta separarlas:
+  // "todavía no terminó de cargar" vs "ya cargó y no hay nada" (ej. la
+  // cuenta fue borrada desde el admin pero el navegador sigue con una
+  // sesión vieja guardada) — sin este flag, el segundo caso se leía igual
+  // que el primero y la pantalla de carga se quedaba esperando para
+  // siempre. Bug real reportado.
+  const [perfilCargado, setPerfilCargado] = useState(false);
   const [leccionAbierta, setLeccionAbierta] = useState(null);
   const [modoRepaso, setModoRepaso] = useState(false);
   const [onboardingOn, setOnboardingOn] = useState(false);
@@ -60,9 +67,23 @@ export default function Home() {
 
   useEffect(() => {
     if (!usuarioReal) return;
+    setPerfilCargado(false); // por si quedó en true de una sesión anterior
     cargarProgreso(usuarioReal.id).then(setProgreso);
-    cargarPerfil(usuarioReal.id).then(setPerfil);
+    cargarPerfil(usuarioReal.id).then((p) => {
+      setPerfil(p);
+      setPerfilCargado(true);
+    });
   }, [usuarioReal]);
+
+  // La cuenta ya no existe de verdad (ej. un admin la borró) pero el
+  // navegador todavía trae una sesión vieja guardada — cargarPerfil()
+  // terminó, pero no encontró nada. En vez de quedarse trabado, se cierra
+  // esa sesión fantasma y se manda de vuelta al login.
+  useEffect(() => {
+    if (!esPreview && usuarioReal && perfilCargado && perfil === null) {
+      cerrarSesion();
+    }
+  }, [esPreview, usuarioReal, perfilCargado, perfil, cerrarSesion]);
 
   // Cuenta admin — no ve la app de estudiante (Camino/Ranking/Perfil), va
   // directo al panel. No aplica en vista previa (?preview=1), donde
@@ -232,9 +253,17 @@ export default function Home() {
   // null — en ese instante `necesitaNombre` evaluaba a false (null && ...)
   // y la app completa ya se mostraba interactiva, saltándose el alias
   // obligatorio durante esa ventana. Se cierra ese hueco esperando el
-  // perfil antes de decidir si hace falta el alias.
-  if (!esPreview && perfil === null) {
+  // perfil antes de decidir si hace falta el alias — usando
+  // `perfilCargado` (no `perfil === null`) para no quedarse esperando
+  // para siempre si la cuenta ya no existe de verdad (ver el useEffect de
+  // arriba, que cierra la sesión fantasma en ese caso).
+  if (!esPreview && !perfilCargado) {
     return <Cargando texto="Cargando tu perfil…" />;
+  }
+  if (!esPreview && perfil === null) {
+    // Ya se disparó cerrarSesion() en el useEffect — esto solo evita un
+    // parpadeo del resto de la pantalla mientras esa sesión se cierra.
+    return <Cargando texto="Cerrando sesión…" />;
   }
 
   // Una sola vez — mientras el nombre siga en el default, todavía no lo personalizaron.
