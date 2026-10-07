@@ -285,3 +285,12 @@ create policy "perfil_privado_insert_own" on public.perfil_privado for insert wi
 
 drop policy if exists "perfil_privado_update_own" on public.perfil_privado;
 create policy "perfil_privado_update_own" on public.perfil_privado for update using (auth.uid() = id);
+
+-- Admin puede ver el correo de cualquiera (lo necesita para soporte/gestión
+-- de usuarios en el panel) — sigue sin ser público, solo un admin real
+-- pasa este check (es_admin se valida contra profiles, no un flag del
+-- cliente).
+drop policy if exists "perfil_privado_select_admin" on public.perfil_privado;
+create policy "perfil_privado_select_admin" on public.perfil_privado for select using (
+  exists (select 1 from public.profiles p where p.id = auth.uid() and p.es_admin = true)
+);

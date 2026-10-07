@@ -1,13 +1,22 @@
 "use client";
 import { supabase } from "./supabaseClient";
 
+// profiles y perfil_privado viven separadas a propósito (el correo es
+// privado, profiles es legible por cualquiera para el Ranking) — como no
+// hay una FK directa entre ellas, no se pueden traer en una sola consulta
+// con el embedding normal de PostgREST; se piden aparte y se juntan aquí
+// por id. perfil_privado_select_admin (nueva policy) es lo que permite que
+// un admin real lea todos los correos, no solo el suyo.
 export async function cargarTodosLosUsuarios() {
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .order("created_at", { ascending: false });
-  if (error) { console.warn("cargarTodosLosUsuarios:", error.message); return []; }
-  return data;
+  const [{ data: perfiles, error: errPerfiles }, { data: correos, error: errCorreos }] = await Promise.all([
+    supabase.from("profiles").select("*").order("created_at", { ascending: false }),
+    supabase.from("perfil_privado").select("id, email"),
+  ]);
+  if (errPerfiles) { console.warn("cargarTodosLosUsuarios:", errPerfiles.message); return []; }
+  if (errCorreos) console.warn("cargarTodosLosUsuarios (correos):", errCorreos.message);
+
+  const correoPorId = new Map((correos || []).map((c) => [c.id, c.email]));
+  return (perfiles || []).map((p) => ({ ...p, email: correoPorId.get(p.id) || null }));
 }
 
 // Borra la cuenta completa de un usuario (auth + profiles + progreso +

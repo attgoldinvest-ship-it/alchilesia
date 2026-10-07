@@ -140,10 +140,11 @@ export default function AdminPage() {
           <p className="text-muted text-sm">Sin resultados.</p>
         ) : (
           <div className="rounded-card border border-border overflow-x-auto">
-            <table className="w-full text-sm min-w-[740px]">
+            <table className="w-full text-sm min-w-[880px]">
               <thead>
                 <tr className="bg-surface text-left text-[11px] text-muted uppercase tracking-wide">
                   <th className="px-4 py-3 font-bold">Nombre</th>
+                  <th className="px-4 py-3 font-bold">Correo</th>
                   <th className="px-4 py-3 font-bold text-right">XP</th>
                   <th className="px-4 py-3 font-bold text-right">Racha</th>
                   <th className="px-4 py-3 font-bold text-right">Vidas</th>
@@ -165,6 +166,7 @@ export default function AdminPage() {
                           {u.es_admin && <span className="text-[10px] font-bold text-accent bg-accent/10 border border-accent/30 px-1.5 py-0.5 rounded-full shrink-0">ADMIN</span>}
                         </span>
                       </td>
+                      <td className="px-4 py-3 text-muted text-[12px] whitespace-nowrap">{u.email || "—"}</td>
                       <td className="px-4 py-3 text-right tabular-nums text-accent font-bold">{u.xp}</td>
                       <td className="px-4 py-3 text-right tabular-nums">{u.racha}</td>
                       <td className="px-4 py-3 text-right tabular-nums">{u.corazones}</td>
