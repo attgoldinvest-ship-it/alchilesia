@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import { Shield, Search, Users, Flame, Gem, CalendarOff, LogOut } from "lucide-react";
+import { Shield, Search, Users, Flame, Gem, CalendarOff, LogOut, Trash2, X, Check } from "lucide-react";
 import Link from "next/link";
 import { useSesion } from "@/lib/useSesion";
 import { cargarPerfil } from "@/lib/progreso";
-import { cargarTodosLosUsuarios } from "@/lib/admin";
+import { cargarTodosLosUsuarios, eliminarUsuario } from "@/lib/admin";
 import Cargando from "@/components/Cargando";
 
 function diasInactivo(ultimaActividad) {
@@ -20,6 +20,9 @@ export default function AdminPage() {
   const [usuarios, setUsuarios] = useState(null);
   const [busqueda, setBusqueda] = useState("");
   const [esPreview, setEsPreview] = useState(false);
+  const [confirmandoId, setConfirmandoId] = useState(null);
+  const [borrandoId, setBorrandoId] = useState(null);
+  const [errorBorrado, setErrorBorrado] = useState("");
 
   useEffect(() => {
     try {
@@ -38,6 +41,20 @@ export default function AdminPage() {
   useEffect(() => {
     if (perfil?.es_admin) cargarTodosLosUsuarios().then(setUsuarios);
   }, [perfil]);
+
+  // Irreversible — borra la cuenta completa (auth + perfil + progreso +
+  // push + correo), por eso exige 2 toques: el primero solo arma la
+  // confirmación en esa fila, el segundo (el check) ejecuta de verdad.
+  async function confirmarBorrado(userId) {
+    if (esPreview) { setConfirmandoId(null); return; }
+    setBorrandoId(userId);
+    setErrorBorrado("");
+    const r = await eliminarUsuario(userId);
+    setBorrandoId(null);
+    setConfirmandoId(null);
+    if (!r.ok) { setErrorBorrado(r.motivo || "No se pudo eliminar"); return; }
+    setUsuarios((prev) => prev.filter((u) => u.id !== userId));
+  }
 
   const filtrados = useMemo(() => {
     if (!usuarios) return [];
@@ -111,13 +128,19 @@ export default function AdminPage() {
           />
         </div>
 
+        {errorBorrado && (
+          <div className="mb-4 px-4 py-2.5 rounded-chip bg-[#FF3B5C]/10 border border-[#FF3B5C]/40 text-[#FF3B5C] text-[12px]">
+            No se pudo eliminar: {errorBorrado}
+          </div>
+        )}
+
         {usuarios === null ? (
           <p className="text-muted text-sm">Cargando usuarios…</p>
         ) : filtrados.length === 0 ? (
           <p className="text-muted text-sm">Sin resultados.</p>
         ) : (
           <div className="rounded-card border border-border overflow-x-auto">
-            <table className="w-full text-sm min-w-[640px]">
+            <table className="w-full text-sm min-w-[740px]">
               <thead>
                 <tr className="bg-surface text-left text-[11px] text-muted uppercase tracking-wide">
                   <th className="px-4 py-3 font-bold">Nombre</th>
@@ -126,11 +149,14 @@ export default function AdminPage() {
                   <th className="px-4 py-3 font-bold text-right">Vidas</th>
                   <th className="px-4 py-3 font-bold text-right">Inactivo</th>
                   <th className="px-4 py-3 font-bold text-right">Registro</th>
+                  <th className="px-4 py-3 font-bold text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {filtrados.map((u) => {
                   const inactivo = diasInactivo(u.ultima_actividad);
+                  const confirmando = confirmandoId === u.id;
+                  const borrando = borrandoId === u.id;
                   return (
                     <tr key={u.id} className="border-t border-border">
                       <td className="px-4 py-3 font-semibold whitespace-nowrap">
@@ -153,6 +179,39 @@ export default function AdminPage() {
                       </td>
                       <td className="px-4 py-3 text-right text-muted text-[12px] whitespace-nowrap">
                         {new Date(u.created_at).toLocaleDateString("es-MX", { day: "2-digit", month: "short", year: "numeric" })}
+                      </td>
+                      <td className="px-4 py-3 text-right whitespace-nowrap">
+                        {u.es_admin ? (
+                          <span className="text-muted text-[11px]">—</span>
+                        ) : confirmando ? (
+                          <span className="inline-flex items-center gap-1.5">
+                            <span className="text-[11px] text-[#FF3B5C] font-semibold mr-1">¿Seguro?</span>
+                            <button
+                              onClick={() => confirmarBorrado(u.id)}
+                              disabled={borrando}
+                              className="w-7 h-7 rounded-full bg-[#FF3B5C]/15 border border-[#FF3B5C] text-[#FF3B5C] flex items-center justify-center transition-transform active:scale-90 disabled:opacity-50"
+                              title="Sí, eliminar"
+                            >
+                              <Check size={13} />
+                            </button>
+                            <button
+                              onClick={() => setConfirmandoId(null)}
+                              disabled={borrando}
+                              className="w-7 h-7 rounded-full bg-surface border border-border text-muted flex items-center justify-center transition-transform active:scale-90"
+                              title="Cancelar"
+                            >
+                              <X size={13} />
+                            </button>
+                          </span>
+                        ) : (
+                          <button
+                            onClick={() => setConfirmandoId(u.id)}
+                            className="w-7 h-7 rounded-full bg-surface border border-border text-muted hover:text-[#FF3B5C] hover:border-[#FF3B5C]/40 flex items-center justify-center transition-colors active:scale-90"
+                            title="Eliminar usuario"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );
