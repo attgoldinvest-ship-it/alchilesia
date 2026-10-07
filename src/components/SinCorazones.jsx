@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Heart } from "lucide-react";
+import Mascota from "./Mascota";
 
 function tiempoRestante(corazonPerdidoEn, recargaMin) {
   if (!corazonPerdidoEn) return null;
@@ -29,11 +29,7 @@ export default function SinCorazones({ corazonPerdidoEn, recargaMin = 5, onCerra
   return (
     <div className="fixed inset-0 z-[60] bg-black/85 backdrop-blur-sm flex items-center justify-center p-5">
       <div className="w-full max-w-[340px] rounded-card bg-surface border-2 border-[#FF3B5C]/40 px-7 py-9 flex flex-col items-center text-center gap-5">
-        <div className="flex items-center gap-2">
-          {[0, 1, 2].map((i) => (
-            <Heart key={i} size={30} className="text-[#3A3A3E] pulso-urgente" style={{ animationDelay: `${i * 0.15}s` }} />
-          ))}
-        </div>
+        <Mascota mood="triste" size={100} />
 
         <div>
           <h1 className="text-[21px] font-[800] leading-tight">Te quedaste sin corazones</h1>
