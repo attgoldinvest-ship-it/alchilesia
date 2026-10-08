@@ -236,6 +236,16 @@ export default function Home() {
     cargarPerfil(usuario.id).then(setPerfil); // en segundo plano, para todo lo demás (racha, xp…)
   }
 
+  // Muerte Súbita gasta corazones reales — mismo patrón que cerrarLeccion:
+  // aplica de inmediato el conteo que el reto ya confirmó con el servidor,
+  // y refresca el perfil completo en segundo plano (el XP ganado).
+  async function cerrarMuerteSubita(datos) {
+    aplicarCorazonesOptimista(datos);
+    setMuerteSubitaOn(false);
+    if (esPreview || !usuario) return;
+    cargarPerfil(usuario.id).then(setPerfil);
+  }
+
   async function terminarLeccion(datos) {
     const idTerminada = leccionAbierta?.id;
     aplicarCorazonesOptimista(datos);
@@ -408,7 +418,9 @@ export default function Home() {
         <MuerteSubita
           userId={usuario?.id}
           completadas={[...completadas]}
-          onCerrar={() => setMuerteSubitaOn(false)}
+          corazonesIniciales={perfil?.corazones ?? 3}
+          corazonPerdidoEnInicial={perfil?.corazon_perdido_en}
+          onCerrar={cerrarMuerteSubita}
         />
       )}
 
