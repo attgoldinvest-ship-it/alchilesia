@@ -57,9 +57,27 @@ export function useSesion() {
     if (error) console.warn("Error de login con Google:", error.message);
   }
 
+  // Validación mínima a propósito (solo que tenga @) — la cuenta queda
+  // confirmada de inmediato (autoconfirm activado en Supabase), sin correo
+  // de verificación de por medio, para que el registro sea instantáneo.
+  async function registrarConCorreo(email, password) {
+    if (!email.includes("@")) return { ok: false, motivo: "correo-invalido" };
+    if (password.length < 6) return { ok: false, motivo: "password-corta" };
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) return { ok: false, motivo: error.message };
+    return { ok: true };
+  }
+
+  async function iniciarConCorreo(email, password) {
+    if (!email.includes("@")) return { ok: false, motivo: "correo-invalido" };
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return { ok: false, motivo: error.message };
+    return { ok: true };
+  }
+
   async function cerrarSesion() {
     await supabase.auth.signOut();
   }
 
-  return { usuario, cargando, continuarConGoogle, cerrarSesion };
+  return { usuario, cargando, continuarConGoogle, registrarConCorreo, iniciarConCorreo, cerrarSesion };
 }

@@ -38,7 +38,7 @@ const USUARIO_PREVIEW = { id: "preview-demo", email: "tu@correo.com", user_metad
 export default function Home() {
   const router = useRouter();
   const [tab, setTab] = useState("aprender");
-  const { usuario: usuarioReal, cargando, continuarConGoogle, cerrarSesion } = useSesion();
+  const { usuario: usuarioReal, cargando, continuarConGoogle, registrarConCorreo, iniciarConCorreo, cerrarSesion } = useSesion();
   // esPreview SIEMPRE arranca en false (igual en servidor y cliente) — se
   // decide de verdad dentro de un useEffect, nunca leyendo `window` durante
   // el render, porque el servidor no tiene `window` y eso rompe la hidratación
@@ -289,7 +289,7 @@ export default function Home() {
   }
 
   if (!usuario) {
-    return <Login onGoogle={continuarConGoogle} />;
+    return <Login onGoogle={continuarConGoogle} onRegistrarCorreo={registrarConCorreo} onIniciarCorreo={iniciarConCorreo} />;
   }
 
   // Mismo guard que el de arriba, pero para el instante entre "ya sabemos
