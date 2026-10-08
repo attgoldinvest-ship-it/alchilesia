@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Mail, Heart, Flame, Gem, Check, ArrowLeft, Shuffle } from "lucide-react";
+import { Mail, Heart, Flame, Gem, Check, ArrowLeft, Shuffle, Skull } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { AVATARES, urlAvatar } from "@/lib/avatares";
 import Mascota from "./Mascota";
@@ -9,6 +9,7 @@ const INSTRUCCIONES = [
   { Icono: Heart, color: "#FF3B5C", texto: "3 corazones. Pierdes 1 por error, se recargan solos cada 5 min." },
   { Icono: Gem, color: "#4CC9F0", texto: "Ganas XP por cada lección completada — más si aciertas a la primera." },
   { Icono: Flame, color: "#FF6B2D", texto: "Entra seguido para mantener tu racha — se rompe si dejas un día en blanco." },
+  { Icono: Skull, color: "#9A6CFF", texto: "¡Nuevo! Cada 5 días de racha desbloqueas Muerte Súbita: preguntas contrarreloj con tus corazones reales en juego." },
 ];
 
 const PASOS = ["reglas", "alias", "foto"];
