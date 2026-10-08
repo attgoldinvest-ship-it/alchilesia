@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Bell, X } from "lucide-react";
 import Ejercicio from "./ejercicios/Ejercicio";
 import SinCorazones from "./SinCorazones";
 import Mascota from "./Mascota";
 import { TEORIA, PREGUNTAS } from "@/data/contenido";
 import { guardarProgreso, sumarXp, ajustarCorazones, registrarActividad } from "@/lib/progreso";
+import { soportaPush, notificacionesActivas, activarNotificaciones } from "@/lib/push";
 
 // Convierte **negrita** a <strong> real, sin HTML crudo — seguro porque el
 // contenido es nuestro (contenido/produccion-*.js), no texto de usuarios.
@@ -62,6 +64,30 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
   // dónde partir sin esperar a refrescar el perfil completo.
   const [corazonPerdidoEnLocal, setCorazonPerdidoEnLocal] = useState(corazonPerdidoEn);
   const [sinCorazones, setSinCorazones] = useState(false);
+  // Aviso de notificaciones — a propósito solo en la pantalla de teoría de
+  // un quiz real (no repaso), que es cuando el usuario está más
+  // comprometido con la sesión. Nunca se dispara el permiso nativo solo;
+  // requiere el toque del usuario en "Activar", como exigen los
+  // navegadores para no auto-rechazar el prompt.
+  const [avisoNotif, setAvisoNotif] = useState(false);
+  const [pidiendoNotif, setPidiendoNotif] = useState(false);
+
+  useEffect(() => {
+    if (repaso || !userId || !soportaPush()) return;
+    let activo = true;
+    notificacionesActivas().then((si) => {
+      if (activo && !si) setAvisoNotif(true);
+    });
+    return () => { activo = false; };
+  }, [repaso, userId]);
+
+  async function activarNotifsDesdeQuiz() {
+    if (pidiendoNotif) return;
+    setPidiendoNotif(true);
+    const r = await activarNotificaciones(userId);
+    setPidiendoNotif(false);
+    if (r.ok) setAvisoNotif(false);
+  }
 
   async function continuar(ok) {
     if (ok) setCorrectas((c) => c + 1);
@@ -126,6 +152,27 @@ export default function Practica({ leccion, userId, repaso = false, corazones = 
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 py-6 max-w-[480px] w-full mx-auto">
+        {avisoNotif && (
+          <div className="flex items-center gap-3 rounded-card bg-surface border border-accent/30 px-4 py-3.5 mb-4">
+            <div className="w-8 h-8 rounded-full bg-accent/15 flex items-center justify-center shrink-0">
+              <Bell size={14} className="text-accent" />
+            </div>
+            <p className="flex-1 text-[12px] text-white/90 leading-relaxed">
+              Activa notificaciones para avisarte cuando se recarguen tus corazones y no perder tu racha.
+            </p>
+            <button
+              onClick={activarNotifsDesdeQuiz}
+              disabled={pidiendoNotif}
+              className="shrink-0 px-3 py-2 rounded-chip bg-accent text-black text-[11px] font-bold transition-transform active:scale-95 disabled:opacity-50"
+            >
+              {pidiendoNotif ? "…" : "Activar"}
+            </button>
+            <button onClick={() => setAvisoNotif(false)} className="shrink-0 text-muted transition-transform active:scale-90">
+              <X size={14} />
+            </button>
+          </div>
+        )}
+
         {fase === "teoria" && teoria && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">

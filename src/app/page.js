@@ -12,9 +12,10 @@ import Onboarding from "@/components/Onboarding";
 import Certificado from "@/components/Certificado";
 import Login from "@/components/Login";
 import NombreUsuario from "@/components/NombreUsuario";
-import InstalarApp from "@/components/InstalarApp";
+import InstalarApp, { useCapturaInstallPrompt, yaVistoOInstalado } from "@/components/InstalarApp";
 import SinCorazones from "@/components/SinCorazones";
 import Cargando from "@/components/Cargando";
+import MuerteSubita, { InvitacionMuerteSubita } from "@/components/MuerteSubita";
 import { UNIDADES, TODAS, LECCIONES_CON_CONTENIDO, BLOQUES } from "@/data/temario";
 import { useSesion } from "@/lib/useSesion";
 import { cargarProgreso, cargarPerfil, regenerarCorazones } from "@/lib/progreso";
@@ -56,14 +57,35 @@ export default function Home() {
   const [leccionAbierta, setLeccionAbierta] = useState(null);
   const [modoRepaso, setModoRepaso] = useState(false);
   const [onboardingOn, setOnboardingOn] = useState(false);
+  const [instalarAppOn, setInstalarAppOn] = useState(false);
   const [certificado, setCertificado] = useState(null); // "bloque1" | "curso" | "preview" | null
   const [mostrarSinCorazones, setMostrarSinCorazones] = useState(false);
+  const [muerteSubitaInvite, setMuerteSubitaInvite] = useState(false);
+  const [muerteSubitaOn, setMuerteSubitaOn] = useState(false);
+  // Captura beforeinstallprompt lo antes posible — Chrome solo lo dispara
+  // una vez por carga de página, así que hay que engancharlo desde el
+  // arranque aunque la pantalla de instalar se muestre más adelante en
+  // la secuencia (después del alias/onboarding, antes del Camino).
+  const installPrompt = useCapturaInstallPrompt();
 
   useEffect(() => {
     registrarServiceWorker();
   }, []);
 
   const usuario = esPreview ? USUARIO_PREVIEW : usuarioReal;
+  // Se calcula aquí arriba (antes de los early-return de carga) para poder
+  // usarlo en la secuencia de pantallas de abajo — un hook no puede
+  // depender de algo definido después de un return condicional.
+  const necesitaNombre = usuario && perfil && perfil.nombre === "Estudiante";
+
+  // Secuencia de pantallas de un solo uso: alias (si falta) → onboarding
+  // (si no se vio) → instalar app (si no se vio/ya está instalada) → recién
+  // ahí el Camino. Antes "instalar app" era un bannercito independiente
+  // que podía aparecer encima de cualquier cosa; ahora es un paso real.
+  useEffect(() => {
+    if (esPreview || !usuario || necesitaNombre || onboardingOn || instalarAppOn) return;
+    if (!yaVistoOInstalado()) setInstalarAppOn(true);
+  }, [esPreview, usuario, necesitaNombre, onboardingOn, instalarAppOn]);
 
   useEffect(() => {
     if (!usuarioReal) return;
@@ -144,6 +166,21 @@ export default function Home() {
   );
 
   const bloqueActual = BLOQUES[siguienteGlobal?.unidad?.bloque ?? 1];
+
+  // Muerte Súbita — se invita una sola vez por cada múltiplo de 5 días de
+  // racha (5, 10, 15…), nunca de más. Se guarda el último múltiplo ya
+  // mostrado en localStorage para no repetir la invitación cada vez que
+  // se abre la app con la misma racha.
+  useEffect(() => {
+    if (esPreview || !perfil?.racha || perfil.racha < 5) return;
+    const multiplo = Math.floor(perfil.racha / 5) * 5;
+    let ultimoMostrado = 0;
+    try { ultimoMostrado = parseInt(localStorage.getItem("cc_muerte_subita_racha") || "0", 10); } catch {}
+    if (multiplo > ultimoMostrado && completadas.size >= 3) {
+      setMuerteSubitaInvite(true);
+      try { localStorage.setItem("cc_muerte_subita_racha", String(multiplo)); } catch {}
+    }
+  }, [esPreview, perfil?.racha, completadas]);
 
   // useCallback con identidad estable — sin esto, Camino.jsx recibía una
   // función "nueva" en cada render del padre (ej. cada 30s por el sondeo
@@ -228,6 +265,10 @@ export default function Home() {
     setOnboardingOn(false);
   }
 
+  function cerrarInstalarApp() {
+    setInstalarAppOn(false);
+  }
+
   // Mientras useSesion() todavía no resuelve si hay sesión, antes NO había
   // pantalla de espera — se caía directo a renderizar la app completa con
   // datos vacíos (el Camino, TopBar en 0, etc.) durante ese instante, un
@@ -265,9 +306,6 @@ export default function Home() {
     // parpadeo del resto de la pantalla mientras esa sesión se cierra.
     return <Cargando texto="Cerrando sesión…" />;
   }
-
-  // Una sola vez — mientras el nombre siga en el default, todavía no lo personalizaron.
-  const necesitaNombre = usuario && perfil && perfil.nombre === "Estudiante";
 
   return (
     // h-dvh + flex column, en vez de min-h-screen con el BottomNav en
@@ -358,7 +396,21 @@ export default function Home() {
         <SinCorazones corazonPerdidoEn={perfil?.corazon_perdido_en} onCerrar={() => setMostrarSinCorazones(false)} />
       )}
 
-      {onboardingOn && <Onboarding onTerminar={cerrarOnboarding} />}
+      {muerteSubitaInvite && !leccionAbierta && (
+        <InvitacionMuerteSubita
+          racha={perfil?.racha ?? 0}
+          onAceptar={() => { setMuerteSubitaInvite(false); setMuerteSubitaOn(true); }}
+          onRechazar={() => setMuerteSubitaInvite(false)}
+        />
+      )}
+
+      {muerteSubitaOn && (
+        <MuerteSubita
+          userId={usuario?.id}
+          completadas={[...completadas]}
+          onCerrar={() => setMuerteSubitaOn(false)}
+        />
+      )}
 
       {necesitaNombre && (
         <NombreUsuario
@@ -369,6 +421,12 @@ export default function Home() {
         />
       )}
 
+      {!necesitaNombre && onboardingOn && <Onboarding onTerminar={cerrarOnboarding} />}
+
+      {!necesitaNombre && !onboardingOn && instalarAppOn && (
+        <InstalarApp prompt={installPrompt} onTerminar={cerrarInstalarApp} />
+      )}
+
       {certificado && (
         <Certificado
           tipo={certificado}
@@ -377,8 +435,6 @@ export default function Home() {
           onCerrar={() => setCertificado(null)}
         />
       )}
-
-      <InstalarApp />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Download, X, Share } from "lucide-react";
+import { Download, Share, Sparkles } from "lucide-react";
 
 function esStandalone() {
   if (typeof window === "undefined") return false;
@@ -12,70 +12,89 @@ function esIOS() {
   return /iphone|ipad|ipod/i.test(navigator.userAgent);
 }
 
-// Banner de instalación — captura el prompt nativo de Chrome/Edge/Android, y
-// muestra instrucciones manuales en iOS (Safari no dispara beforeinstallprompt).
-export default function InstalarApp() {
+export function yaVistoOInstalado() {
+  try {
+    return !!localStorage.getItem("cc_instalar_visto") || esStandalone();
+  } catch {
+    return false;
+  }
+}
+
+// Captura el evento beforeinstallprompt lo antes posible (antes de que el
+// usuario llegue a esta pantalla) — Chrome/Android solo lo dispara una vez
+// por carga de página, si no lo agarramos aquí arriba se pierde.
+export function useCapturaInstallPrompt() {
   const [prompt, setPrompt] = useState(null);
-  const [mostrarIOS, setMostrarIOS] = useState(false);
-  const [cerrado, setCerrado] = useState(true);
-
   useEffect(() => {
-    try {
-      if (localStorage.getItem("cc_instalar_visto") || esStandalone()) return;
-    } catch {}
-
     function onBeforeInstall(e) {
       e.preventDefault();
       setPrompt(e);
-      setCerrado(false);
     }
     window.addEventListener("beforeinstallprompt", onBeforeInstall);
-
-    if (esIOS() && !esStandalone()) {
-      setMostrarIOS(true);
-      setCerrado(false);
-    }
-
     return () => window.removeEventListener("beforeinstallprompt", onBeforeInstall);
   }, []);
+  return prompt;
+}
 
-  function cerrar() {
-    setCerrado(true);
-    try { localStorage.setItem("cc_instalar_visto", "1"); } catch {}
-  }
+// Pantalla completa — a propósito como paso obligatorio del flujo (antes
+// era un banner chico, fácil de ignorar) justo después de completar el
+// alias/onboarding y antes de entrar al Camino, una sola vez por
+// dispositivo. "Ahora no" sigue disponible — nunca bloquea el acceso al
+// curso, solo pide la decisión una vez con más presencia.
+export default function InstalarApp({ prompt, onTerminar }) {
+  const mostrarIOS = esIOS() && !esStandalone();
 
   async function instalar() {
-    if (!prompt) return;
-    prompt.prompt();
-    await prompt.userChoice;
+    if (prompt) {
+      prompt.prompt();
+      await prompt.userChoice;
+    }
     cerrar();
   }
 
-  if (cerrado || (!prompt && !mostrarIOS)) return null;
+  function cerrar() {
+    try { localStorage.setItem("cc_instalar_visto", "1"); } catch {}
+    onTerminar();
+  }
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-40 max-w-[440px] mx-auto">
-      <div className="rounded-card bg-surface border-2 border-accent/40 px-4 py-3.5 flex items-center gap-3 shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
-        <div className="w-10 h-10 shrink-0 rounded-xl bg-accent/15 border border-accent flex items-center justify-center">
-          <Download size={18} className="text-accent" />
+    <div className="fixed inset-0 z-50 bg-bg flex flex-col items-center justify-center px-8 gap-7 text-center">
+      <div className="w-20 h-20 rounded-[22px] bg-accent/15 border-2 border-accent flex items-center justify-center">
+        <Download size={32} className="text-accent" />
+      </div>
+
+      <div>
+        <div className="flex items-center justify-center gap-1.5 text-accent mb-2">
+          <Sparkles size={13} />
+          <span className="text-[11px] font-bold tracking-[0.14em] uppercase">Recomendado</span>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-[13px] font-bold">Instala NiroAcademy</p>
-          {mostrarIOS ? (
-            <p className="text-[11px] text-muted leading-snug">
-              Toca <Share size={11} className="inline -mt-0.5" /> y luego "Agregar a pantalla de inicio"
+        <h1 className="text-[24px] font-[800] tracking-[-0.03em] leading-tight">Instala NiroAcademy</h1>
+        <p className="text-[13px] text-muted mt-2 max-w-[280px] mx-auto leading-relaxed">
+          Acceso directo desde tu pantalla de inicio, funciona sin conexión, y recibe recordatorios para no perder tu racha.
+        </p>
+      </div>
+
+      <div className="w-full max-w-[320px] flex flex-col gap-3">
+        {mostrarIOS ? (
+          <div className="rounded-card bg-surface border border-border px-4 py-3.5 text-left flex items-start gap-3">
+            <Share size={16} className="text-accent shrink-0 mt-0.5" />
+            <p className="text-[13px] text-white/90 leading-relaxed">
+              Toca el botón <b>Compartir</b> de Safari y luego <b>"Agregar a pantalla de inicio"</b>.
             </p>
-          ) : (
-            <p className="text-[11px] text-muted">Acceso directo, funciona sin conexión</p>
-          )}
-        </div>
-        {!mostrarIOS && (
-          <button onClick={instalar} className="shrink-0 px-3 py-2 rounded-chip bg-accent text-black text-[12px] font-bold transition-transform active:scale-95">
-            Instalar
+          </div>
+        ) : (
+          <button
+            onClick={instalar}
+            className="w-full py-3.5 rounded-chip bg-accent text-black font-bold transition-transform active:scale-[0.98]"
+          >
+            Instalar ahora
           </button>
         )}
-        <button onClick={cerrar} className="shrink-0 text-muted transition-transform active:scale-90">
-          <X size={16} />
+        <button
+          onClick={cerrar}
+          className="w-full py-3 text-muted text-[13px] font-bold transition-transform active:scale-[0.98]"
+        >
+          Ahora no
         </button>
       </div>
     </div>
