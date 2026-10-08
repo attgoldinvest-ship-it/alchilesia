@@ -1,5 +1,8 @@
-// Service Worker de Con Cabeza — instalabilidad + offline básico + push real.
-const CACHE = "cc-v1";
+// Service Worker de NiroAcademy — instalabilidad + offline básico + push real.
+// Versión del caché subida a propósito — fuerza a los dispositivos ya
+// instalados a tomar esta versión nueva del SW (y de este archivo) en su
+// próxima apertura, en vez de seguir sirviendo una copia vieja cacheada.
+const CACHE = "cc-v2";
 const PRECACHE_URLS = ["/", "/manifest.webmanifest", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", (event) => {
@@ -49,7 +52,7 @@ self.addEventListener("fetch", (event) => {
 // Push real: el payload lo manda quien envíe la notificación (ver
 // src/lib/push.js) — { title, body, url }.
 self.addEventListener("push", (event) => {
-  let datos = { title: "Con Cabeza", body: "Tienes algo pendiente." };
+  let datos = { title: "NiroAcademy", body: "Tienes algo pendiente." };
   try {
     if (event.data) datos = { ...datos, ...event.data.json() };
   } catch {}
